@@ -24,7 +24,7 @@ var users_promise = new Promise(function(resolve) {
 
         var user = new User();
         user.username = 'user';
-        user.password = 'password';
+        user.password = '$2a$10$C.AlRthdMJsCZ06U3YE1oOyQ9wmvc3cAzV.A.hgjAZzMEMWR/NuB6';
         user.info = 'i like green eggs and ham';
         user.save();
 

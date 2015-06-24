@@ -2,12 +2,17 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/user');
+var bcrypt = require('bcrypt-nodejs');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     User.find({}, function (err, docs) {
         res.json(docs);
     });
+});
+
+router.get('/login', function(req, res, next) {
+    res.render('login', { title: 'Express' });
 });
 
 router.get('/:user_id', function(req, res, next) {
@@ -18,7 +23,13 @@ router.get('/:user_id', function(req, res, next) {
     });
 });
 
-router.post('/', function(req, res, next) {
+router.post('/login', function(req, res, next) {
+    User.findOne({username:req.body.username}, function (err, docs) {
+        res.json(bcrypt.compareSync(req.body.password, docs.password));
+    });
+});
+
+router.post('/register', function(req, res, next) {
     var u = new User();
     u.name = req.body.name;
     u.username = req.body.username;
