@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    h1(style="text-align:center") Login
+    div.container(style="width:500px")
+        div.jumbotron
+            form(method="post")
+                div.form-group
+                    label Username
+                    input.form-control(type="username",name="username")
+                div.form-group
+                    label Password
+                    input.form-control(type="password", name="password")
+                a(href='/passwordreset', class='button') Forgot Password?
+                button.btn.btn-success Submit
+                
+                a(href='/users/register', class='button btn btn-danger') Register
