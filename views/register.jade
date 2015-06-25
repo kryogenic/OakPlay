@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    h1(style="text-align:center") Member sign up page
+    div.container(style="width:500px")
+        div.jumbotron
+            form(method="post")
+                div.form-group
+                    label Username
+                    input.form-control(type="username",name="username")
+                div.form-group
+                    label Password
+                    input.form-control(type="password", name="password")
+                div.form-group
+                    label Confirm Password
+                    input.form-control(type="password", name="confirmPass")
+                div.form-group
+                    label Email
+                    input.form-control(type="email", name="email")
+                button.btn.btn-default Submit
