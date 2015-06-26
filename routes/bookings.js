@@ -17,3 +17,5 @@ router.post('/create', function(req, res, next) {
     });
     b.save();
 });
+
+module.exports = router;
