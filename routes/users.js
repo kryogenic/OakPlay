@@ -15,14 +15,6 @@ router.get('/login', function(req, res, next) {
     res.render('login', { title: 'Express' });
 });
 
-router.get('/:user_id', function(req, res, next) {
-    User.findById(req.params.user_id, function (err, user) {
-        if(err)
-            res.send(err);
-        res.json(user);
-    });
-});
-
 router.post('/login', function(req, res, next) {
     User.findOne({username:req.body.username}, function (err, docs) {
         if(docs == null)
@@ -32,22 +24,37 @@ router.post('/login', function(req, res, next) {
     });
 });
 
+router.get('/register', function(req, res, next) {
+    res.render('register', { title: 'Express' });
+});
+
 router.post('/register', function(req, res, next) {
-    var u = new User();
-    u.name = req.body.name;
-    u.username = req.body.username;
-    u.password = req.body.password;
+    if(req.body.confirmPass != req.body.password) {
+        res.json({success:false,error:'Passwords don\'t match'});
+        return;
+    }
+    var u = new User({
+        username: req.body.username,
+        password: bcrypt.hashSync(req.body.password),
+        email: req.body.email
+    });
     u.save(function(err) {
         if(err) {
             if(err.code == 11000)
-                return res.json( {success: false, message: "A user with that name already exists"});
+                res.json({success:false,message:'A user with that name already exists'});
             else
-                return res.send(err);
+                res.json({success:false,message:err});
+        } else {
+            res.json({success:true});
         }
     });
+});
 
-    User.find({}, function (err, docs) {
-        res.json(docs);
+router.get('/:user_id', function(req, res, next) {
+    User.findById(req.params.user_id, function (err, user) {
+        if(err)
+            res.send(err);
+        res.json(user);
     });
 });
 
