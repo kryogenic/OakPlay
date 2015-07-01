@@ -3,6 +3,16 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/user');
 var bcrypt = require('bcrypt-nodejs');
+var nodemailer = require('nodemailer');
+var generatePassword = require('password-generator');
+
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'oakplayrec@gmail.com',
+        pass: 'seng.299'
+    }
+});
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -46,6 +56,35 @@ router.post('/register', function(req, res, next) {
                 res.json({success:false,message:err});
         } else {
             res.json({success:true});
+        }
+    });
+});
+
+router.get('/passwordreset', function(req, res, next) {
+    res.render('passwordreset', { title: 'Express' });
+});
+
+router.post('/passwordreset', function(req, res, next) {
+    User.findOne({username:req.body.username}, function (err, docs) {
+        if(docs == null){
+            res.json(false);
+        }else{
+            var password = generatePassword(10, false);
+            docs.password = bcrypt.hashSync(password);
+            docs.save();
+            var mailOptions = {
+                from: 'Oak Play <oakplayrec@gmail.com>',
+                to: docs.email,
+                subject: 'Oak Play Password Reset',
+                text: 'Your password has been successfully reset to: ' + password
+            };
+            transporter.sendMail(mailOptions, function(err, info){
+                if(err){
+                    res.send(err);
+                }else{
+                    res.json({success:true, message: info.response});
+                }
+            });
         }
     });
 });
