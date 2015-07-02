@@ -26,6 +26,7 @@ var users_promise = new Promise(function(resolve) {
         user.username = 'user';
         user.password = '$2a$10$C.AlRthdMJsCZ06U3YE1oOyQ9wmvc3cAzV.A.hgjAZzMEMWR/NuB6';
         user.info = 'i like green eggs and ham';
+        user.email = 'user@gmail.com'
         user.save();
 
         console.log('generated users');
