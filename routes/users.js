@@ -14,87 +14,107 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-    User.find({}, function (err, docs) {
-        res.json(docs);
-    });
-});
+var isAuthenticated = function (req, res, next) {
+    // if user is authenticated in the session, call the next() to call the next request handler 
+    // Passport adds this method to request object. A middleware is allowed to add properties to
+    // request and response objects
+    if (req.isAuthenticated())
+        return next();
+    // if the user is not authenticated then redirect him to the login page
+    res.redirect('/users/login');
+}
 
-router.get('/login', function(req, res, next) {
-    res.render('login', { title: 'Express' });
-});
+module.exports = function(passport){
 
-router.post('/login', function(req, res, next) {
-    User.findOne({username:req.body.username}, function (err, docs) {
-        if(docs == null)
-            res.json(false);
-        else
-            res.json(bcrypt.compareSync(req.body.password, docs.password));
-    });
-});
-
-router.get('/register', function(req, res, next) {
-    res.render('register', { title: 'Express' });
-});
-
-router.post('/register', function(req, res, next) {
-    if(req.body.confirmPass != req.body.password) {
-        res.json({success:false,error:'Passwords don\'t match'});
-        return;
-    }
-    var u = new User({
-        username: req.body.username,
-        password: bcrypt.hashSync(req.body.password),
-        email: req.body.email
-    });
-    u.save(function(err) {
-        if(err) {
-            if(err.code == 11000)
-                res.json({success:false,message:'A user with that name already exists'});
-            else
-                res.json({success:false,message:err});
-        } else {
-            res.json({success:true});
-        }
-    });
-});
-
-router.get('/passwordreset', function(req, res, next) {
-    res.render('passwordreset', { title: 'Express' });
-});
-
-router.post('/passwordreset', function(req, res, next) {
-    User.findOne({username:req.body.username}, function (err, docs) {
-        if(docs == null){
-            res.json(false);
+    /*GET login page. */
+    router.get('/login', function(req, res, next) {
+        if (req.isAuthenticated()){
+            res.redirect('/users/profile');
         }else{
-            var password = generatePassword(10, false);
-            docs.password = bcrypt.hashSync(password);
-            docs.save();
-            var mailOptions = {
-                from: 'Oak Play <oakplayrec@gmail.com>',
-                to: docs.email,
-                subject: 'Oak Play Password Reset',
-                text: 'Your password has been successfully reset to: ' + password
-            };
-            transporter.sendMail(mailOptions, function(err, info){
-                if(err){
-                    res.send(err);
-                }else{
-                    res.json({success:true, message: info.response});
-                }
-            });
+            res.render('login', {message: req.flash('message')});
         }
     });
-});
 
-router.get('/:user_id', function(req, res, next) {
-    User.findById(req.params.user_id, function (err, user) {
-        if(err)
-            res.send(err);
-        res.json(user);
+    /*Handle Login POST */
+    router.post('/login', passport.authenticate('login', {
+        successRedirect: 'profile',
+        failureRedirect: 'login',
+        failureFlash: true
+    }));
+
+    /*GET profile page. */
+    router.get('/profile', isAuthenticated, function(req, res, next) {
+        res.render('profile', { message: req.flash('message') });
     });
-});
 
-module.exports = router;
+    /*GET Registration Page */
+    router.get('/register', function(req, res, next) {
+        if (req.isAuthenticated()){
+            res.redirect('/users/profile');
+        }else{
+            res.render('register', {message: req.flash('message')});
+        }
+    });
+
+    /* Handle Registration POST */
+    router.post('/register', passport.authenticate('signup', {
+        successRedirect: 'profile',
+        failureRedirect: 'register',
+        failureFlash : true  
+    }));
+
+    /* GET users listing. */
+    router.get('/', isAuthenticated, function(req, res, next) {
+        User.find({}, function (err, docs) {
+            res.json(docs);
+        });
+    });
+
+    /* GET Password Reset */
+    router.get('/passwordreset', function(req, res, next) {
+        res.render('passwordreset');
+    });
+
+    /* Handle Password Reset */
+    router.post('/passwordreset', function(req, res, next) {
+        User.findOne({username:req.body.username}, function (err, docs) {
+            if(docs == null){
+                res.json(false);
+            }else{
+                var password = generatePassword(10, false);
+                docs.password = bcrypt.hashSync(password);
+                docs.save();
+                var mailOptions = {
+                    from: 'Oak Play <oakplayrec@gmail.com>',
+                    to: docs.email,
+                    subject: 'Oak Play Password Reset',
+                    text: 'Your password has been successfully reset to: ' + password
+                };
+                transporter.sendMail(mailOptions, function(err, info){
+                    if(err){
+                        res.send(err);
+                    }else{
+                        res.json({success:true, message: info.response});
+                    }
+                });
+            }
+        });
+    });
+
+    /* Handle Logout */
+    router.get('/signout', function(req, res) {
+        req.logout();
+        res.redirect('login');
+    });
+
+    /* GET specific user info */
+    router.get('/:user_id', function(req, res, next) {
+        User.findById(req.params.user_id, function (err, user) {
+            if(err)
+                res.send(err);
+            res.json(user);
+        });
+    });
+
+    return router;
+}
