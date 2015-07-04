@@ -1,4 +1,8 @@
-[![Logo](https://www.oakbay.ca/parks-recreation)]
 # OakPlay Recreation Booking Assistant
 
-[![Build Status]]
+To run:
+-Clone repository
+-install nodejs and npm
+$ npm install
+$ npm start
+-navigate to http://localhost:3000 on a browser of your choice
