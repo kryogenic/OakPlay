@@ -4,6 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var expressSession = require('express-session');
+var flash = require('connect-flash');
 
 // database
 var mongoose = require('mongoose');
@@ -12,10 +15,9 @@ mongoose.connect('mongodb://107.181.168.124:27017/rec');
 require('./database/generate');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var users = require('./routes/users')(passport);
 var timetable = require('./routes/timetable');
 var bookings = require('./routes/bookings');
-var profile = require('./routes/profile');
 
 var app = express();
 
@@ -30,12 +32,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(expressSession({secret: 'supersecretkey',
+                        saveUninitialized: true,
+                        resave: true}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
+var initPassport = require('./passport/init');
+initPassport(passport);
+
+
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/timetable', timetable);
-app.use('/booking/', bookings);
-app.use('/profile/', profile);
+app.use('/timetable/', timetable);
+app.use('/bookings', bookings);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

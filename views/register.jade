@@ -1,20 +1,22 @@
 extends layout
 
 block content
+    p MESSAGES: #{message}
     h1(style="text-align:center") Member sign up page
     div.container(style="width:500px")
         div.jumbotron
             form(method="post")
                 div.form-group
                     label Username
-                    input.form-control(type="username",name="username")
+                    input.form-control(type="username",name="username", required)
                 div.form-group
                     label Password
-                    input.form-control(type="password", name="password")
+                    input.form-control(type="password", name="password", required)
                 div.form-group
                     label Confirm Password
-                    input.form-control(type="password", name="confirmPass")
+                    input.form-control(type="password", name="confirmPass", required)
                 div.form-group
                     label Email
-                    input.form-control(type="email", name="email")
-                button.btn.btn-success Submit
+                    input.form-control(type="email", name="email", required)  
+                button.btn.btn-success Submit              
+                a(href='/users/login', class='button btn btn-danger' style='margin-left:10px') Login
