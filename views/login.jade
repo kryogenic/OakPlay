@@ -1,10 +1,10 @@
 extends layout
 
 block content
-    p MESSAGES: #{message}
     h1(style="text-align:center") Login
     div.container(style="width:500px")
         div.jumbotron
+            p #{message}
             form(method="post")
                 div.form-group
                     label Username
