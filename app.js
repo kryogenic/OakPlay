@@ -46,8 +46,8 @@ initPassport(passport);
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/timetable', timetable);
-app.use('/booking/', bookings);
+app.use('/timetable/', timetable);
+app.use('/bookings', bookings);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -4,14 +4,17 @@ extends layout
 block content
     p MESSAGES: #{message}
     h1(style="text-align:center") Profile
-    a(href='/users/login') login
+    a(href='/users/profile') Profile 
+    a(href='/timetable/facilities') Reserve Now 
+    a(href='/users/signout') Logout
 
     h2 Information
     p.
      Name
-     User #
-     Join Date
+     Email
+     Edit Password
 
     h2 Bookings
     p Your bookings here
-    a(href='/users/signout') logout  
+    p Location | Weekday | Time
+ 
