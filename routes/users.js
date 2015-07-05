@@ -43,14 +43,14 @@ module.exports = function(passport){
     }));
 
     /*GET profile page. */
-    router.get('/profile', isAuthenticated, function(req, res, next) {
-        res.render('profile', { message: req.flash('message') });
+    router.get('/profile/', isAuthenticated, function(req, res, next) {
+        res.render('profile', { message: req.flash('message'), username: req.user.username });
     });
 
     /*GET Registration Page */
     router.get('/register', function(req, res, next) {
         if (req.isAuthenticated()){
-            res.redirect('/users/profile');
+            res.redirect('/users/profile/');
         }else{
             res.render('register', {message: req.flash('message')});
         }
