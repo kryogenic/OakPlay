@@ -2,12 +2,7 @@
 extends layout
 
 block content
-    p MESSAGES: #{message}
     h1(style="text-align:center") Profile
-    a(href='/users/login') 
-        |login
-    a(href='/users/signout') 
-        |logout  
 
     h2 Information
     table.table
@@ -18,7 +13,7 @@ block content
                 th Join Date
         tr
             td #{username}
-            td 71391478
+            td #{id}
             td Aug. 27th 2013
 
     h2 Bookings

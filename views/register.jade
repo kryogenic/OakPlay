@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    h1(style="text-align:center") Member sign up page
+    h1(style="text-align:center") Register
     div.container(style="width:500px")
         div.jumbotron
             p #{message}
@@ -18,5 +18,5 @@ block content
                 div.form-group
                     label Email
                     input.form-control(type="email", name="email", required)  
-                button.btn.btn-success Submit              
-                a(href='/users/login', class='button btn btn-danger' style='margin-left:10px') Login
+                button.btn.btn-default Submit              
+                a(href='/users/login', class='button btn btn-default' style='margin-left:10px') Login
