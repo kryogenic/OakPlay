@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    p MESSAGES: #{message}
+    h1(style="text-align:center") Facilities
+    a(href='/users/profile') Profile 
+    a(href='/timetable/facilities') Reserve Now 
+    a(href='/users/signout') Logout
+    
+    p 
+    p Selection
+    ul
+        li
+            a(href='Tennis/1') Tennis Courts(5) 
+        li
+            a(href='Pool/1') Pool(1) 
+        li
+            a(href='Squash/1') Squash Courts(4) 
+        li
+            a(href='Workout/1') Workout Rooms(3) 
+        li
+            a(href='Spin/1') Spinning Rooms(2) 

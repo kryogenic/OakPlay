@@ -63,23 +63,48 @@ module.exports = function(passport){
         failureFlash : true  
     }));
 
-    /* GET users listing. */
-    router.get('/', isAuthenticated, function(req, res, next) {
-        User.find({}, function (err, docs) {
-            res.json(docs);
-        });
+    /* GET Forgot Username */
+    router.get('/username', function(req, res, next) {
+        res.render('forgotusername', {message: req.flash('message')});
     });
+
+    /* Handle Forgotten Username */
+    router.post('/username', function(req, res, next){
+        User.findOne({email:req.body.email}, function(err, docs){
+            if(docs == null){
+                req.flash('message', 'There is no user with that email address.')
+                res.redirect('passwordreset');
+            }else{
+                var mailOptions = {
+                    from: 'Oak Play <oakplayrec@gmail.com>',
+                    to: docs.email,
+                    subject: 'Oak Play Username',
+                    text: 'The username registered to this email address is: ' + docs.username
+                };
+                transporter.sendMail(mailOptions, function(err, info){
+                    if(err){
+                        req.flash('message', 'There was an error and email was not sent, please try again.')
+                        res.redirect('username');
+                    }else{
+                        req.flash('message', 'Your username has been sent to your registered email address.')
+                        res.redirect('login')
+                    }
+                });
+            }
+        })
+    })
 
     /* GET Password Reset */
     router.get('/passwordreset', function(req, res, next) {
-        res.render('passwordreset');
+        res.render('passwordreset', {message: req.flash('message')});
     });
 
     /* Handle Password Reset */
     router.post('/passwordreset', function(req, res, next) {
         User.findOne({username:req.body.username}, function (err, docs) {
             if(docs == null){
-                res.json(false);
+                req.flash('message', 'There is no user by that name.')
+                res.redirect('passwordreset');
             }else{
                 var password = generatePassword(10, false);
                 docs.password = bcrypt.hashSync(password);
@@ -92,9 +117,11 @@ module.exports = function(passport){
                 };
                 transporter.sendMail(mailOptions, function(err, info){
                     if(err){
-                        res.send(err);
+                        req.flash('message', 'There was an error and email was not sent, please try again.')
+                        res.redirect('passwordreset');
                     }else{
-                        res.json({success:true, message: info.response});
+                        req.flash('message', 'Password reset email has been sent to your registered email address.')
+                        res.redirect('login')
                     }
                 });
             }
@@ -105,6 +132,13 @@ module.exports = function(passport){
     router.get('/signout', function(req, res) {
         req.logout();
         res.redirect('login');
+    });
+
+    /* GET users listing. */
+    router.get('/', isAuthenticated, function(req, res, next) {
+        User.find({}, function (err, docs) {
+            res.json(docs);
+        });
     });
 
     /* GET specific user info */
