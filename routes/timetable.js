@@ -2,6 +2,34 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var Booking = require('../models/booking');
+var Facility = require('../models/facility');
+
+var isAuthenticated = function (req, res, next) {
+    // if user is authenticated in the session, call the next() to call the next request handler 
+    // Passport adds this method to request object. A middleware is allowed to add properties to
+    // request and response objects
+    if (req.isAuthenticated())
+        return next();
+    // if the user is not authenticated then redirect him to the login page
+    res.redirect('/users/login');
+}
+
+router.get('/facilities', isAuthenticated, function(req, res, next) {
+    res.render('facilities', { message: req.flash('message') });
+});
+
+/* GET specific user info */
+router.get('/:facility/:num', isAuthenticated, function(req, res, next) {
+    Facility.find({name:req.params.facility}, function(err, docs){
+        if(docs == null){
+            req.flash('message', "That facility doesn't exist!")
+            res.redirect('/timetable/facilities');
+        }else{
+            res.render('timetable', {number: req.params.num, facilities: docs, message: req.flash('message')});
+        }
+    });
+});
+
 
 router.get('/', function(req, res, next) {
     Booking.findOne({}, function(err, booking) {

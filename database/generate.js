@@ -9,7 +9,30 @@ var facilities_promise = new Promise(function(resolve) {
         var f;
         for(var i = 1; i < 6; i++) {
             f = new Facility();
-            f.name = 'Tennis ' + i;
+            f.name = 'Tennis';
+            f.id = i;
+            f.save();
+        }
+        f = new Facility();
+        f.name = 'Pool';
+        f.id = 1;
+        f.save();
+        for(var i = 1; i < 5; i++) {
+            f = new Facility();
+            f.name = 'Squash';
+            f.id = i;
+            f.save();
+        }
+        for(var i = 1; i < 4; i++) {
+            f = new Facility();
+            f.name = 'Workout';
+            f.id = i;
+            f.save();
+        }
+        for(var i = 1; i < 3; i++) {
+            f = new Facility();
+            f.name = 'Spin';
+            f.id = i;
             f.save();
         }
 
@@ -26,6 +49,8 @@ var users_promise = new Promise(function(resolve) {
         user.username = 'user';
         user.password = '$2a$10$C.AlRthdMJsCZ06U3YE1oOyQ9wmvc3cAzV.A.hgjAZzMEMWR/NuB6';
         user.info = 'i like green eggs and ham';
+        user.email = 'user@gmail.com';
+        user.date_joined = new Date();
         user.save();
 
         console.log('generated users');
@@ -41,22 +66,28 @@ Promise.all([facilities_promise, users_promise]).then(function(promise_result) {
     Booking.remove({}, function() {
 
         var b = new Booking();
-        b.day = 'monday';
-        b.timeslot = [2,3,4];
+        b.day = 'Monday';
+        b.res_id = 0;
+        b.timeslot = 2;
+        b.duration = 2;
         b.facility = promise_result[0];
         b.user = promise_result[1];
         b.save();
 
         b = new Booking();
-        b.day = 'tuesday';
-        b.timeslot = [2,3,4];
+        b.day = 'Tuesday';
+        b.res_id = 1;
+        b.timeslot = 3;
+        b.duration = 1;
         b.facility = promise_result[0];
         b.user = promise_result[1];
         b.save();
 
         b = new Booking();
-        b.day = 'wednesday';
-        b.timeslot = [2,3,4];
+        b.day = 'Wednesday';
+        b.res_id = 2;
+        b.timeslot = 1;
+        b.duration = 3;
         b.facility = promise_result[0];
         b.user = promise_result[1];
         b.save();

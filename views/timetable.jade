@@ -1,0 +1,15 @@
+extends layout
+
+block content
+    p MESSAGES: #{message}
+    h1(style="text-align:center") Timetable  
+    a(href='/users/profile') Profile 
+    a(href='/timetable/facilities') Reserve Now 
+    a(href='/users/signout') Logout
+
+    p 
+    p #{facilities[0].name} #{number} 
+    ul
+        each val, index in facilities
+            li
+                a(href='/timetable/'+val.name+'/'+(index+1))= val.name+' '+(index+1)

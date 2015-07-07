@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    p MESSAGES: #{message}
+    h1(style="text-align:center") Forgot Username
+    div.container(style="width:500px")
+        div.jumbotron
+            form(method="post")
+                div.form-group
+                    label Email
+                    input.form-control(type="email",name="email")
+                button.btn.btn-success(style="float:right") Confirm
+                p(style='font-size: 100%') Your username will be emailed to your registered email address.

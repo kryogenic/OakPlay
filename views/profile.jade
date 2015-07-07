@@ -1,0 +1,32 @@
+
+extends layout
+
+block content
+    p MESSAGES: #{message}
+    h1(style="text-align:center") Profile    a(href='/users/login') 
+        |login
+    a(href='/users/profile') Profile 
+    a(href='/timetable/facilities') Reserve Now 
+    a(href='/users/signout') Logout
+    a(href='/users/signout') 
+        |logout  
+    h2 Information
+    table.table
+        thead
+            tr
+                th Username
+                th Card #
+                th Join Date
+        tr
+            td #{username}
+            td 71391478
+            td Aug. 27th 2013
+    h2 Bookings
+    table.table.table-hover
+        thead
+            tr
+                th Facility
+                th Time
+        tr
+            td Facility 1
+            td 8:30-9:30
