@@ -1,22 +1,47 @@
 extends layout
 
 block content
-    p MESSAGES: #{message}
     h1(style="text-align:center") Facilities
-    a(href='/users/profile') Profile 
-    a(href='/timetable/facilities') Reserve Now 
-    a(href='/users/signout') Logout
-    
-    p 
-    p Selection
-    ul
-        li
-            a(href='Tennis/1') Tennis Courts(5) 
-        li
-            a(href='Pool/1') Pool(1) 
-        li
-            a(href='Squash/1') Squash Courts(4) 
-        li
-            a(href='Workout/1') Workout Rooms(3) 
-        li
-            a(href='Spin/1') Spinning Rooms(2) 
+    hr
+    div.row(style="margin:auto;")
+        div.col-md-4.col-sm-6
+            a.image-link(href="Tennis/1")
+                div.image-wrapper
+                    div.text-wrap
+                        p.booknow Book Now!
+                    img.img-responsive(src="/images/tennis-courts.jpg")
+            div.caption
+                h4 Tennis Court
+        div.col-md-4.col-sm-6
+            a.image-link(href="Pool/1")
+                div.image-wrapper
+                    div.text-wrap
+                        p.booknow Book Now!
+                    img.img-responsive(src="/images/pool.jpg")
+            div.caption
+                h4 Pool
+        div.col-md-4.col-sm-6
+            a.image-link(href="Squash/1")
+                div.image-wrapper
+                    div.text-wrap
+                        p.booknow Book Now!
+                    img.img-responsive(src="/images/squash.jpg")
+            div.caption
+                h4 Squash Court
+    div.row(style="margin:auto;")
+        div.col-md-4.col-sm-6.col-md-offset-2
+            a.image-link(href="Workout/1")
+                div.image-wrapper
+                    div.text-wrap
+                        p.booknow Book Now!
+                    img.img-responsive(src="/images/gym.jpg")
+            div.caption
+                h4 Workout Room
+        div.col-md-4.col-sm-6.portfolio-item
+            a.image-link(href="Spin/1")
+                div.image-wrapper
+                    div.text-wrap
+                        p.booknow Book Now!
+                    img.img-responsive(src="/images/spin.jpg")
+            div(class="caption")
+                h4 Spinning Room
