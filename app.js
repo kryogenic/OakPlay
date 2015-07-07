@@ -42,11 +42,9 @@ app.use(flash());
 var initPassport = require('./passport/init');
 initPassport(passport);
 
-
-
 app.use('/', routes);
 app.use('/users', users);
-app.use('/timetable/', timetable);
+app.use('/timetable', timetable);
 app.use('/bookings', bookings);
 
 // catch 404 and forward to error handler

@@ -6,3 +6,34 @@ body {
 a {
   color: #00B7FF;
 }
+
+.text-wrap > .booknow {
+    position: absolute;
+    color:white;
+    top: 50%;
+    width: 100%;
+}
+
+.image-wrapper {
+    position: relative;
+}
+
+.text-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: rgba(0,0,0,.7);
+    opacity:0;
+    transition:.5s;
+}
+
+.image-link:hover .text-wrap {
+    visibility: visible;
+    opacity: 1;
+    transition:.5s;
+}
+
+.caption {
+    text-align: center;
+}
