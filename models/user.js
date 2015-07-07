@@ -6,7 +6,7 @@ var UserSchema = new mongoose.Schema({
     last_name:    { type: String, required: false },
     password:     { type: String, required: true, index: true },
     email:        { type: String, required: true, index: true },
-    date_joined:  { type: Date, required: true, index: true },
+    date_joined:  { type: Date, required: true, index: true, default: Date.now },
     info:         { type: String, select: false }
 });
 
