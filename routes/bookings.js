@@ -18,4 +18,14 @@ router.post('/create', function(req, res, next) {
     b.save();
 });
 
+router.get('/', function(req, res, next){
+	Booking.find({}, function(err, docs){
+		if(!err){
+			res.json(docs);
+		}else{
+			console.log(err);
+		}
+	})
+})
+
 module.exports = router;

@@ -65,7 +65,7 @@ module.exports = function(passport){
 
     /* GET Forgot Username */
     router.get('/username', function(req, res, next) {
-        res.render('forgotusername', {message: req.flash('message')});
+        res.render('forgotusername', {message: req.flash('message'), nav: true });
     });
 
     /* Handle Forgotten Username */
@@ -73,7 +73,7 @@ module.exports = function(passport){
         User.findOne({email:req.body.email}, function(err, docs){
             if(docs == null){
                 req.flash('message', 'There is no user with that email address.')
-                res.redirect('passwordreset');
+                res.redirect('username');
             }else{
                 var mailOptions = {
                     from: 'Oak Play <oakplayrec@gmail.com>',
@@ -96,7 +96,7 @@ module.exports = function(passport){
 
     /* GET Password Reset */
     router.get('/passwordreset', function(req, res, next) {
-        res.render('passwordreset', {message: req.flash('message')});
+        res.render('passwordreset', {message: req.flash('message'), nav: true });
     });
 
     /* Handle Password Reset */

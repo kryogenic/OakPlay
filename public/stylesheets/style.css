@@ -7,6 +7,51 @@ a {
   color: #00B7FF;
 }
 
+.calendar{
+    width: 480px;
+    margin: auto;
+}
+
+.day{
+    float: left;
+}
+
+.timeslots{
+    float: left;
+}
+
+.time{
+    text-align: center;
+    line-height: 30px;
+    height: 30px;
+    width: 50px;
+    margin: 5px;
+}
+
+.userbooked-time{
+    background-color: green;
+    border-radius: 10%;
+    height: 30px;
+    width: 50px;
+    margin: 5px;
+}
+
+.unavailable-time{
+    background-color: red;
+    border-radius: 10%;
+    height: 30px;
+    width: 50px;
+    margin: 5px;
+}
+
+.available-time{
+    background-color: #D3D3D3;
+    border-radius: 10%;
+    height: 30px;
+    width: 50px;
+    margin: 5px;
+}
+
 .text-wrap > .booknow {
     position: absolute;
     color:white;

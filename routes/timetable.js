@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Booking = require('../models/booking');
 var Facility = require('../models/facility');
+var User = require('../models/user');
 
 var isAuthenticated = function (req, res, next) {
     // if user is authenticated in the session, call the next() to call the next request handler 
@@ -18,14 +19,28 @@ router.get('/facilities', isAuthenticated, function(req, res, next) {
     res.render('facilities', { message: req.flash('message') });
 });
 
-/* GET specific user info */
+/* GET specific timetable */
 router.get('/:facility/:num', isAuthenticated, function(req, res, next) {
     Facility.find({name:req.params.facility}, function(err, docs){
         if(docs == null){
             req.flash('message', "That facility doesn't exist!")
             res.redirect('/timetable/facilities');
         }else{
-            res.render('timetable', {number: req.params.num, facilities: docs, message: req.flash('message')});
+            var fac;
+            for(var f in docs){
+                if(docs[f].id == req.params.num){
+                    fac = docs[f];
+                    break;
+                }
+            }
+            Booking.find({facility:fac}, function(err, fdoc){
+                User.findOne({username:req.user.username}, function(err, u){
+                    console.log(u);
+                    Booking.find({user: u, facility: fac}, function(err, udoc){
+                        res.render('timetable', {number: req.params.num, facilities: docs, message: req.flash('message'), fBookings: fdoc, uBookings: udoc});
+                    })
+                })
+            })
         }
     });
 });
