@@ -66,7 +66,7 @@ Promise.all([facilities_promise, users_promise]).then(function(promise_result) {
     Booking.remove({}, function() {
 
         var b = new Booking();
-        b.day = 'Monday';
+        b.day = 'Mon';
         b.res_id = 0;
         b.timeslot = 2;
         b.duration = 2;
@@ -75,7 +75,7 @@ Promise.all([facilities_promise, users_promise]).then(function(promise_result) {
         b.save();
 
         b = new Booking();
-        b.day = 'Tuesday';
+        b.day = 'Tues';
         b.res_id = 1;
         b.timeslot = 3;
         b.duration = 1;
@@ -84,7 +84,7 @@ Promise.all([facilities_promise, users_promise]).then(function(promise_result) {
         b.save();
 
         b = new Booking();
-        b.day = 'Wednesday';
+        b.day = 'Wed';
         b.res_id = 2;
         b.timeslot = 1;
         b.duration = 3;
