@@ -8,7 +8,8 @@ var UserSchema = new mongoose.Schema({
     email:        { type: String, required: true, index: true },
     date_joined:  { type: Date, required: true, index: true, default: Date.now },
     info:         { type: String, select: false },
-    admin:        { type: Boolean, required: true, index: true, default: false}
+    admin:        { type: Boolean, required: true, index: true, default: false},
+    cooldown:     { type: Date }
 });
 
 var model = mongoose.model('User', UserSchema);
