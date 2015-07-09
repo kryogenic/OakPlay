@@ -5,8 +5,25 @@ var Booking = require('../models/booking');
 var User = require('../models/user');
 
 router.post('/delete', User.isAuthenticated, function(req, res, next) {
-    Booking.findOne({day: req.body.day, timeslot: req.body.timeslot, facility: req.body.facility, user:req.user._id}).remove().exec();
-    res.json({success:true});
+    if(req.user.admin) {
+        Booking.remove({day: req.body.day, timeslot: req.body.timeslot, facility: req.body.facility}, function(err) {
+            if(!err) {
+                res.json({success:true});
+            } else {
+                console.log(err);
+                res.json({success:false});
+            }
+        });
+    } else {
+        Booking.remove({day: req.body.day, timeslot: req.body.timeslot, facility: req.body.facility, user:req.user._id}, function(err) {
+            if(!err) {
+                res.json({success:true});
+            } else {
+                console.log(err);
+                res.json({success:false});
+            }
+        });
+    }
 });
 
 router.post('/create', User.isAuthenticated, function(req, res, next) {

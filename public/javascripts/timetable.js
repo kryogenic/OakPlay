@@ -20,26 +20,26 @@ $(".timeslot").click(function(e){
             day: timeslotDiv.attr('data-day'),
             timeslot: timeslotDiv.attr('data-time'),
             facility:facility_id})
-            .done(function(data) {
-                if(data.success) {
-                    timeslotDiv.removeClass('available-time');
-                    timeslotDiv.addClass('userbooked-time');
-                } else {
-                    alert(data.message);
-                }
-            });
-    } else if(timeslotDiv.hasClass('userbooked-time')) {
+        .done(function(data) {
+            if(data.success) {
+                timeslotDiv.removeClass('available-time');
+                timeslotDiv.addClass('userbooked-time');
+            } else {
+                alert(data.message);
+            }
+        });
+    } else if(timeslotDiv.hasClass('userbooked-time') || timeslotDiv.hasClass('unavailable-time')) {
         $.post("/bookings/delete", {
             day: timeslotDiv.attr('data-day'),
             timeslot: timeslotDiv.attr('data-time'),
             facility:facility_id})
-            .done(function(data) {
-                if(data.success) {
-                    timeslotDiv.removeClass('userbooked-time');
-                    timeslotDiv.addClass('available-time');
-                } else {
-                    alert(data.message);
-                }
-            });
+        .done(function(data) {
+            if(data.success) {
+                timeslotDiv.removeClass('userbooked-time');
+                timeslotDiv.addClass('available-time');
+            } else {
+                alert(data.message);
+            }
+        });
     }
 });

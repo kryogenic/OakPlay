@@ -52,8 +52,17 @@ var users_promise = new Promise(function(resolve) {
         user.last_name = 'lastylast';
         user.info = 'i like green eggs and ham';
         user.email = 'user@gmail.com';
-        user.date_joined = new Date();
         user.save();
+
+        var admin = new User();
+        admin.username = 'admin';
+        admin.password = '$2a$10$C.AlRthdMJsCZ06U3YE1oOyQ9wmvc3cAzV.A.hgjAZzMEMWR/NuB6';
+        admin.first_name = '1337';
+        admin.last_name = 'h4x0r';
+        admin.info = 'there is no spoon';
+        admin.email = 'admin@gmail.com';
+        admin.admin = true;
+        admin.save();
 
         console.log('generated users');
         resolve(user._id);

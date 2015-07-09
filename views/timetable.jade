@@ -57,7 +57,7 @@ block content
                         each b in fBookings
                             if b.day == day
                                 if b.timeslot == n
-                                    div.unavailable-time
+                                    div(class='timeslot unavailable-time', data-day=day, data-time=n)
                                     - n++
                                     break
                         div(class='timeslot available-time', data-day=day, data-time=n)
@@ -76,7 +76,7 @@ block content
                         each b in fBookings
                             if b.day == day
                                 if b.timeslot == n
-                                    div.unavailable-time
+                                    div(class='timeslot unavailable-time', data-day=day, data-time=n)
                                     - n++
                                     break
                         div(class='timeslot available-time', data-day=day, data-time=n)
