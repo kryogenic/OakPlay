@@ -22,7 +22,6 @@ router.post('/create', User.isAuthenticated, function(req, res, next) {
     authorize_user_booking(req.user, b, function(r) {
         console.log(r)
         if(r[0] == true && r[1] == true && r[2] == true) {
-            console.log(r);
             b.save(function(err) {
                 if(err)
                     console.log(err);
