@@ -28,6 +28,14 @@ a {
     margin: 5px;
 }
 
+.day-name{
+    text-align: center;
+    line-height: 30px;
+    height: 30px;
+    width: 50px;
+    margin: 5px;
+}
+
 .userbooked-time{
     background-color: green;
     border-radius: 10%;
@@ -82,3 +90,9 @@ a {
 .caption {
     text-align: center;
 }
+
+.navbar {
+    min-height: 20px;
+}
+
+

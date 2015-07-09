@@ -1,6 +1,24 @@
 extends layout
 
+
 block content
+
+    script(src="/javascripts/timetable.js")
+
+    nav.navbar.navbar-default.navbar-fixed-top()
+        .container-fluid
+            div.calendar
+                div.day
+                    div.time
+                - var days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
+                - var i = 0
+                while i < 7
+                    div.day
+                        div.day-name
+                            - var d = new Date()
+                            - var day = days[(d.getDay()+i++)%7]
+                            p= day
+            
     p #{message}
     div.dropdown
         button.btn.btn-default.dropdown-toggle(type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true") #{facilities[0].name} #{number}  
@@ -25,7 +43,7 @@ block content
         - var i = 0
         while i < 7
             div.day
-                div.time
+                div.day-name
                     - var d = new Date()
                     - var day = days[(d.getDay()+i++)%7]
                     p= day
