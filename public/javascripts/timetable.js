@@ -13,34 +13,33 @@ $(document).ready(function(){
     });
 });
 
-$(".available-time").click(function(e){
+$(".timeslot").click(function(e){
     var timeslotDiv = $(this);
-    $.post("/bookings/create", {
-        day: timeslotDiv.attr('data-day'),
-        timeslot: timeslotDiv.attr('data-time'),
-        facility:facility_id})
-        .done(function(data) {
-            if(data.success) {
-                timeslotDiv.removeClass("available-time");
-                timeslotDiv.addClass("userbooked-time");
-            } else {
-                alert(data.message);
-            }
-        });
-});
-
-$(".userbooked-time").click(function(e){
-    var timeslotDiv = $(this);
-    $.post("/bookings/delete", {
-        day: timeslotDiv.attr('data-day'),
-        timeslot: timeslotDiv.attr('data-time'),
-        facility:facility_id})
-        .done(function(data) {
-            if(data.success) {
-                timeslotDiv.removeClass("userbooked-time");
-                timeslotDiv.addClass("available-time");
-            } else {
-                alert(data.message);
-            }
-        });
+    if(timeslotDiv.hasClass('available-time')) {
+        $.post("/bookings/create", {
+            day: timeslotDiv.attr('data-day'),
+            timeslot: timeslotDiv.attr('data-time'),
+            facility:facility_id})
+            .done(function(data) {
+                if(data.success) {
+                    timeslotDiv.removeClass('available-time');
+                    timeslotDiv.addClass('userbooked-time');
+                } else {
+                    alert(data.message);
+                }
+            });
+    } else if(timeslotDiv.hasClass('userbooked-time')) {
+        $.post("/bookings/delete", {
+            day: timeslotDiv.attr('data-day'),
+            timeslot: timeslotDiv.attr('data-time'),
+            facility:facility_id})
+            .done(function(data) {
+                if(data.success) {
+                    timeslotDiv.removeClass('userbooked-time');
+                    timeslotDiv.addClass('available-time');
+                } else {
+                    alert(data.message);
+                }
+            });
+    }
 });

@@ -51,7 +51,7 @@ block content
                         each b in uBookings
                             if b.day == day
                                 if b.timeslot == n
-                                    div(class='userbooked-time', data-day=day, data-time=n)
+                                    div(class='timeslot userbooked-time', data-day=day, data-time=n)
                                     - n++
                                     break
                         each b in fBookings
@@ -60,7 +60,7 @@ block content
                                     div.unavailable-time
                                     - n++
                                     break
-                        div(class='available-time', data-day=day, data-time=n)
+                        div(class='timeslot available-time', data-day=day, data-time=n)
                         - n++
                     while n < 32
                         div.time
@@ -70,7 +70,7 @@ block content
                         each b in uBookings
                             if b.day == day
                                 if b.timeslot == n
-                                    div(class='userbooked-time', data-day=day, data-time=n)
+                                    div(class='timeslot userbooked-time', data-day=day, data-time=n)
                                     - n++
                                     break
                         each b in fBookings
@@ -79,7 +79,7 @@ block content
                                     div.unavailable-time
                                     - n++
                                     break
-                        div(class='available-time', data-day=day, data-time=n)
+                        div(class='timeslot available-time', data-day=day, data-time=n)
                         - n++
 
     script(type="text/javascript").
