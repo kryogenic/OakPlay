@@ -26,8 +26,6 @@ block content
                 li
                     a(href='/timetable/'+val.name+'/'+(index+1))= val.name+' '+(index+1)
 
-    p #{facility}
-
     h1(style="text-align:center") Timetable  
     div.calendar
         div.timeslots
@@ -42,8 +40,7 @@ block content
         while i < 7
             div.day
                 div.day-name
-                    - var d = new Date()
-                    - var day = days[(d.getDay()+i++)%7]
+                    - var day = days[((new Date()).getDay()+i++)%7]
                     p= day
                 - var n = 0
                 if day == 'Sun'
@@ -54,17 +51,15 @@ block content
                         each b in uBookings
                             if b.day == day
                                 if b.timeslot == n
-                                    - var limit = n + b.duration
-                                    while n < limit
-                                        div.userbooked-time
-                                        - n++
+                                    div(class='userbooked-time', data-day=day, data-time=n)
+                                    - n++
+                                    break
                         each b in fBookings
                             if b.day == day
                                 if b.timeslot == n
-                                    - var limit = n + b.duration
-                                    while n < limit
-                                        div.unavailable-time
-                                        - n++
+                                    div.unavailable-time
+                                    - n++
+                                    break
                         div(class='available-time', data-day=day, data-time=n)
                         - n++
                     while n < 32
@@ -75,20 +70,18 @@ block content
                         each b in uBookings
                             if b.day == day
                                 if b.timeslot == n
-                                    - var limit = n + b.duration
-                                    while n < limit
-                                        div.userbooked-time
-                                        - n++
+                                    div(class='userbooked-time', data-day=day, data-time=n)
+                                    - n++
+                                    break
                         each b in fBookings
                             if b.day == day
                                 if b.timeslot == n
-                                    - var limit = n + b.duration
-                                    while n < limit
-                                        div.unavailable-time
-                                        - n++
+                                    div.unavailable-time
+                                    - n++
+                                    break
                         div(class='available-time', data-day=day, data-time=n)
                         - n++
 
     script(type="text/javascript").
-        var facility_id = "#{facilities[number-1]._id}";
+        var facility_id = "#{facility._id}";
     script(src="/javascripts/timetable.js")

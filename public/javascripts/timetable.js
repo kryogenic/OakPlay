@@ -28,3 +28,19 @@ $(".available-time").click(function(e){
             }
         });
 });
+
+$(".userbooked-time").click(function(e){
+    var timeslotDiv = $(this);
+    $.post("/bookings/delete", {
+        day: timeslotDiv.attr('data-day'),
+        timeslot: timeslotDiv.attr('data-time'),
+        facility:facility_id})
+        .done(function(data) {
+            if(data.success) {
+                timeslotDiv.removeClass("userbooked-time");
+                timeslotDiv.addClass("available-time");
+            } else {
+                alert(data.message);
+            }
+        });
+});

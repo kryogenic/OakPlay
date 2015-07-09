@@ -23,12 +23,9 @@ router.get('/:facility/:num', User.isAuthenticated, function(req, res, next) {
                     break;
                 }
             }
-            Booking.find({facility:fac}, function(err, fdoc){
-                User.findOne({username:req.user.username}, function(err, u){
-                    console.log(u);
-                    Booking.find({user: u, facility: fac}, function(err, udoc){
-                        res.render('timetable', {number: req.params.num, facilities: docs, message: req.flash('message'), fBookings: fdoc, uBookings: udoc});
-                    })
+            Booking.find({facility:fac}, 'day timeslot').sort('timeslot').exec(function(err, fdoc){
+                Booking.find({user: req.user._id, facility: fac}, 'day timeslot').sort('timeslot').exec(function(err, udoc){
+                    res.render('timetable', {number: req.params.num, facilities: docs, message: req.flash('message'), fBookings: fdoc, uBookings: udoc, facility: fac});
                 })
             })
         }

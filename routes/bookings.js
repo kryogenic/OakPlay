@@ -4,8 +4,9 @@ var mongoose = require('mongoose');
 var Booking = require('../models/booking');
 var User = require('../models/user');
 
-router.post('/:booking_id/delete', function(req, res, next) {
-    Booking.remove({_id:req.body.booking_id});
+router.post('/delete', User.isAuthenticated, function(req, res, next) {
+    Booking.findOne({day: req.body.day, timeslot: req.body.timeslot, facility: req.body.facility, user:req.user._id}).remove().exec();
+    res.json({success:true});
 });
 
 router.post('/create', User.isAuthenticated, function(req, res, next) {
@@ -19,6 +20,7 @@ router.post('/create', User.isAuthenticated, function(req, res, next) {
         duration: 1
     });
     authorize_user_booking(req.user, b, function(r) {
+        console.log(r)
         if(r[0] == true && r[1] == true && r[2] == true) {
             console.log(r);
             b.save(function(err) {
@@ -69,7 +71,7 @@ function authorize_user_booking(user, booking, callback) {
             }
         });
     });
-    var max_weekly_reservations = 3;
+    var max_weekly_reservations = 15;
     var enforce_reservation_count = new Promise(function(resolve) {
         Booking.count({user:user, facility:booking.facility}, function(err, count) {
             if(!err){
