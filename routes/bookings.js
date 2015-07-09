@@ -19,7 +19,8 @@ router.post('/create', User.isAuthenticated, function(req, res, next) {
         duration: 1
     });
     authorize_user_booking(req.user, b, function(r) {
-        if(r[0] == r[1] == r[2] == true) {
+        if(r[0] == true && r[1] == true && r[2] == true) {
+            console.log(r);
             b.save(function(err) {
                 if(err)
                     console.log(err);
@@ -59,9 +60,9 @@ function get_date(booking) {
 }*/
 function authorize_user_booking(user, booking, callback) {
     var timeslot_open = new Promise(function(resolve) {
-        Booking.findOne({day:booking.day, timeslot:booking.timeslot, facility:booking.facility}, function(err, docs) {
+        Booking.count({day:booking.day, timeslot:booking.timeslot, facility:booking.facility}, function(err, count) {
             if(!err){
-                resolve(docs == null);
+                resolve(count == 0);
             }else{
                 console.log(err);
                 resolve(false);
@@ -80,9 +81,9 @@ function authorize_user_booking(user, booking, callback) {
         });
     });
     var enforce_one_per_timeslot = new Promise(function(resolve) {
-        Booking.findOne({user:user, facility:booking.facility, timeslot:booking.timeslot}, function(err, docs) {
+        Booking.count({user:user, day:booking.day, timeslot:booking.timeslot}, function(err, count) {
             if(!err){
-                resolve(docs == null);
+                resolve(count == 0);
             }else{
                 console.log(err);
                 resolve(false);
