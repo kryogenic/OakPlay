@@ -28,9 +28,12 @@ block content
                   th Facility
                   th Time
                   th Duration
+                  th.text-right Delete booking
           each b in user_bookings
               tr
                   td=b.facility.id
                   td=b.timeslot
                   td=b.duration
+                  td.text-right 
+                    span.glyphicon.glyphicon-remove
     div.col-md-2
