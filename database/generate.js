@@ -48,6 +48,8 @@ var users_promise = new Promise(function(resolve) {
         var user = new User();
         user.username = 'user';
         user.password = '$2a$10$C.AlRthdMJsCZ06U3YE1oOyQ9wmvc3cAzV.A.hgjAZzMEMWR/NuB6';
+        user.first_name = 'fizzurzt';
+        user.last_name = 'lastylast';
         user.info = 'i like green eggs and ham';
         user.email = 'user@gmail.com';
         user.date_joined = new Date();
@@ -77,7 +79,7 @@ Promise.all([facilities_promise, users_promise]).then(function(promise_result) {
         b = new Booking();
         b.day = 'Tues';
         b.res_id = 1;
-        b.timeslot = 3;
+        b.timeslot = 7;
         b.duration = 1;
         b.facility = promise_result[0];
         b.user = promise_result[1];
@@ -86,7 +88,7 @@ Promise.all([facilities_promise, users_promise]).then(function(promise_result) {
         b = new Booking();
         b.day = 'Wed';
         b.res_id = 2;
-        b.timeslot = 1;
+        b.timeslot = 5;
         b.duration = 3;
         b.facility = promise_result[0];
         b.user = promise_result[1];
