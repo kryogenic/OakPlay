@@ -3,10 +3,6 @@ extends layout
 
 block content
 
-    script(type="text/javascript").
-        var facility_id = "#{facilities[0]._id}";
-    script(src="/javascripts/timetable.js")
-
     nav.navbar.navbar-default.navbar-fixed-top()
         .container-fluid
             div.calendar
@@ -92,3 +88,7 @@ block content
                                         - n++
                         div(class='available-time', data-day=day, data-time=n)
                         - n++
+
+    script(type="text/javascript").
+        var facility_id = "#{facilities[0]._id}";
+    script(src="/javascripts/timetable.js")
