@@ -161,7 +161,31 @@ function authorize_user_booking(user, booking, callback) {
             }
         });
     });
-    Promise.all([no_cooldown, timeslot_open, enforce_reservation_count, enforce_one_per_timeslot]).then(callback);
+    var enforce_max_booking_length = new Promise(function(resolve) {
+        Booking.find({user:user, facility:booking.facility, day:booking.day}, function(err, docs) {
+            var timeslots = new Array(31);
+            for(var idx in docs) {
+                timeslots[docs[idx].timeslot] = 1;
+            }
+            if(!err){
+                resolve(!(
+                    timeslots[booking.timeslot-3] && timeslots[booking.timeslot-2] && timeslots[booking.timeslot-1] ||
+                    timeslots[booking.timeslot-2] && timeslots[booking.timeslot-1] && timeslots[booking.timeslot+1] ||
+                    timeslots[booking.timeslot-1] && timeslots[booking.timeslot+1] && timeslots[booking.timeslot+2] ||
+                    timeslots[booking.timeslot+1] && timeslots[booking.timeslot+2] && timeslots[booking.timeslot+3]
+                ));
+            }else{
+                console.log(err);
+                resolve(false);
+            }
+        });
+    });
+    Promise.all([
+        no_cooldown,
+        timeslot_open,
+        enforce_reservation_count,
+        enforce_one_per_timeslot,
+        enforce_max_booking_length]).then(callback);
 }
 
 module.exports = router;
