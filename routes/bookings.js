@@ -9,7 +9,7 @@ router.post('/:booking_id/delete', function(req, res, next) {
 });
 
 router.post('/create', User.isAuthenticated, function(req, res, next) {
-    console.log(req.user);
+    console.log(req);
     var b = new Booking({
         day: req.body.day,
         timeslot: req.body.timeslot,
@@ -18,7 +18,7 @@ router.post('/create', User.isAuthenticated, function(req, res, next) {
         res_id: 1,
         duration: 1
     });
-    can_book(b, function(r) {
+    authorize_user_booking(req.user, b, function(r) {
         if(r[0] == r[1] == r[2] == true) {
             b.save(function(err) {
                 if(err)
@@ -41,11 +41,6 @@ router.get('/', function(req, res, next){
 	})
 });
 
-function can_book(booking, callback) {
-    return authorize_user_booking(booking, function(res) {
-        callback(res)
-    });
-}
 /* not used currently
 var weekdays = new Array(7);
 weekdays[0] = "Sunday";
@@ -62,13 +57,12 @@ function get_date(booking) {
     var minute = booking.timeslot % 2 == 0 ? 0 : 30;
     return new Date(Date.parse(String.format("%d-%d-%dT%d:%d:00", now.getYear(), now.getMonth(), day, hour, minute)));
 }*/
-function authorize_user_booking(booking, callback) {
+function authorize_user_booking(user, booking, callback) {
     var timeslot_open = new Promise(function(resolve) {
         Booking.findOne({day:booking.day, timeslot:booking.timeslot, facility:booking.facility}, function(err, docs) {
             if(!err){
                 resolve(docs == null);
             }else{
-                console.log("error timeslot");
                 console.log(err);
                 resolve(false);
             }
@@ -80,7 +74,6 @@ function authorize_user_booking(booking, callback) {
             if(!err){
                 resolve(count < max_weekly_reservations);
             }else{
-                console.log("error count");
                 console.log(err);
                 resolve(false);
             }
@@ -91,7 +84,6 @@ function authorize_user_booking(booking, callback) {
             if(!err){
                 resolve(docs == null);
             }else{
-                console.log("error one per");
                 console.log(err);
                 resolve(false);
             }
