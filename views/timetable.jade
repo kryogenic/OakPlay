@@ -3,6 +3,8 @@ extends layout
 
 block content
 
+    script(type="text/javascript").
+        var facility_id = "#{facilities[0]._id}";
     script(src="/javascripts/timetable.js")
 
     nav.navbar.navbar-default.navbar-fixed-top()
@@ -90,20 +92,3 @@ block content
                                         - n++
                         div(class='available-time', data-day=day, data-time=n)
                         - n++
-    script(type="text/javascript").
-        var fac = "#{facilities[0]._id}";
-            $(".available-time").click(function(e){
-                var timeslotDiv = $(this);
-                $.post("/bookings/create", {
-                    day: timeslotDiv.attr('data-day'),
-                    timeslot: timeslotDiv.attr('data-time'),
-                    facility:fac})
-                .done(function(data) {
-                if(data.success) {
-                    timeslotDiv.removeClass("available-time");
-                    timeslotDiv.addClass("userbooked-time");
-                } else {
-                    alert(data.message);
-                }
-            });
-        });
