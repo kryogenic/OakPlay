@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/user');
+var Booking = require("../models/booking");
 var bcrypt = require('bcrypt-nodejs');
 var nodemailer = require('nodemailer');
 var generatePassword = require('password-generator');
@@ -44,7 +45,15 @@ module.exports = function(passport){
 
     /*GET profile page. */
     router.get('/profile', isAuthenticated, function(req, res, next) {
-        res.render('profile', { message: req.flash('message'), username: req.user.username });
+        Booking.find({user:req.user}, function(err, docs){
+            res.render('profile', { message: req.flash('message'),
+                                username: req.user.username,
+                                first_name: req.user.first_name,
+                                last_name: req.user.last_name,
+                                date_joined: req.user.date_joined.toDateString(),
+                                user_bookings: docs
+            });    
+        });
     });
 
     /*GET Registration Page */
