@@ -49,7 +49,7 @@ block content
                                     while n < limit
                                         div.unavailable-time
                                         - n++
-                        div.available-time
+                        div(class='available-time', data-day=day, data-time=n)
                         - n++
                     while n < 32
                         div.time
@@ -70,6 +70,22 @@ block content
                                     while n < limit
                                         div.unavailable-time
                                         - n++
-                        a(href='/users/login')
-                            div.available-time
-                            - n++
+                        div(class='available-time', data-day=day, data-time=n)
+                        - n++
+    script(type="text/javascript").
+        var fac = "#{facilities[0]._id}";
+            $(".available-time").click(function(e){
+                var timeslotDiv = $(this);
+                $.post("/bookings/create", {
+                    day: timeslotDiv.attr('data-day'),
+                    timeslot: timeslotDiv.attr('data-time'),
+                    facility:fac})
+                .done(function(data) {
+                if(data.success) {
+                    timeslotDiv.removeClass("available-time");
+                    timeslotDiv.addClass("userbooked-time");
+                } else {
+                    alert(data.message);
+                }
+            });
+        });
