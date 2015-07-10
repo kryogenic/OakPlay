@@ -30,11 +30,13 @@ block content
                   th Duration
                   th.text-right Delete booking
           each b in user_bookings
-              tr
-                  td=b.facility.name + ' ' + b.facility.id
-                  td=b.timeslot
-                  td=b.duration
-                  td.text-right 
-                    button.btn.btn-danger
-                      span.glyphicon.glyphicon-remove.glyphicon-big
+                  tr.profile-booking(data-href='/timetable/'+b.facility.name+'/'+b.facility.id)
+                      td=b.facility.name + ' ' + b.facility.id
+                      td=b.timeslot
+                      td=b.duration
+                      td.text-right 
+                        button.btn.btn-danger
+                          span.glyphicon.glyphicon-remove
     div.col-md-2
+
+    script(src="/javascripts/profile.js")
