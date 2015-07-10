@@ -37,12 +37,16 @@ block content
                     p= (time == 0 ? 12 : time ) + (n%2 == 1 ? ":00": ":30").toString()
         - var days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
         - var i = 0
+        - var d = new Date()
         while i < 7
             div.day
                 div.day-name
-                    - var day = days[((new Date()).getDay()+i++)%7]
+                    - var day = days[(d.getDay()+i++)%7]
                     p= day
                 - var n = 0
+                while (~~(n/2) + 8) < d.getHours() && i == 1
+                    div.time
+                    - n++
                 if day == 'Sun'
                     while n < 4
                         div.time
@@ -60,8 +64,9 @@ block content
                                     div(class='timeslot unavailable-time', data-day=day, data-time=n)
                                     - n++
                                     break
-                        div(class='timeslot available-time', data-day=day, data-time=n)
-                        - n++
+                        if n < 28
+                            div(class='timeslot available-time', data-day=day, data-time=n)
+                            - n++
                     while n < 32
                         div.time
                         - n++
@@ -79,8 +84,9 @@ block content
                                     div(class='timeslot unavailable-time', data-day=day, data-time=n)
                                     - n++
                                     break
-                        div(class='timeslot available-time', data-day=day, data-time=n)
-                        - n++
+                        if n < 32
+                            div(class='timeslot available-time', data-day=day, data-time=n)
+                            - n++
 
     script(type="text/javascript").
         var facility_id = "#{facility._id}";
