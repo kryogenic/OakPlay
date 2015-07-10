@@ -44,6 +44,17 @@ module.exports = function(passport){
         failureFlash: true
     }));
 
+    /*Get profile_edit page */
+    router.get('/profile_edit', isAuthenticated, function(req, res, next) {
+      res.render('profile_edit', { message: req.flash('message'), 
+                                   nav: true,
+                                   username: req.user.username,
+                                   first_name: req.user.first_name,
+                                   last_name: req.user.last_name,
+                                   date_joined: req.user.date_joined.toDateString(),
+      });
+    });
+
     /*GET profile page. */
     router.get('/profile', isAuthenticated, function(req, res, next) {
       Booking.find({user:req.user}, 'facility timeslot duration day')

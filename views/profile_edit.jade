@@ -1,0 +1,31 @@
+
+extends layout
+
+block content
+  div.row
+    div.col-md-6
+      h1(style="text-align:left") Editing #{username}'s user profile
+    div.col-md-6
+      p  
+  div.container(style="width:650px")
+    div.jumbotron(style="margin-top:2.5em")
+      form(method="post")
+        div.form-group
+          label Username
+          input.form-control(type="username", name="username", required)
+        div.form-group
+          label First Name
+          input.form-control(type="first_name", name="first_name")
+        div.form-group
+          label Last Name
+          input.form-control(type="last_name", name="last_name")
+        div.form-group
+          label Email Address
+          input.form-control(type="email", name="email", required)
+        div.form-group
+          label Email Address
+          input.form-control(type="email", name="email", required)
+        button.btn.btn-default Submit
+        a.button.btn.btn-default(href='/users/profile' style='float:right') Cancel
+      p #{message}
+
