@@ -36,6 +36,7 @@ $(".timeslot").click(function(e){
         .done(function(data) {
             if(data.success) {
                 timeslotDiv.removeClass('userbooked-time');
+                timeslotDiv.removeClass('unavailable-time');
                 timeslotDiv.addClass('available-time');
             } else {
                 alert(data.message);

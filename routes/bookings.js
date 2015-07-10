@@ -107,10 +107,10 @@ function is_in_past(booking) {
 }
 function is_24h_away(booking) {
     var now = new Date();
-    if(weekday_short[booking.day] == weekday_short[weekdays[now.getDay()]]) {
+    if(booking.day == weekdays[now.getDay()]) {
         // is today
         return false;
-    } else if(weekday_short[weekdays[weekdays.indexOf(booking.day)+1]] == now.getDay()) {
+    } else if(weekdays.indexOf(booking.day) == (now.getDay() + 1) % 7) {
         // is tomorrow
         var hour = 8 + Math.floor(booking.timeslot / 2);
         var minute = booking.timeslot % 2 == 0 ? 0 : 30;
@@ -169,10 +169,10 @@ function authorize_user_booking(user, booking, callback) {
             }
             if(!err){
                 resolve(!(
-                    timeslots[booking.timeslot-3] && timeslots[booking.timeslot-2] && timeslots[booking.timeslot-1] ||
-                    timeslots[booking.timeslot-2] && timeslots[booking.timeslot-1] && timeslots[booking.timeslot+1] ||
-                    timeslots[booking.timeslot-1] && timeslots[booking.timeslot+1] && timeslots[booking.timeslot+2] ||
-                    timeslots[booking.timeslot+1] && timeslots[booking.timeslot+2] && timeslots[booking.timeslot+3]
+                timeslots[booking.timeslot-3] && timeslots[booking.timeslot-2] && timeslots[booking.timeslot-1] ||
+                timeslots[booking.timeslot-2] && timeslots[booking.timeslot-1] && timeslots[booking.timeslot+1] ||
+                timeslots[booking.timeslot-1] && timeslots[booking.timeslot+1] && timeslots[booking.timeslot+2] ||
+                timeslots[booking.timeslot+1] && timeslots[booking.timeslot+2] && timeslots[booking.timeslot+3]
                 ));
             }else{
                 console.log(err);
