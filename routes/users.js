@@ -52,8 +52,6 @@ module.exports = function(passport){
           var bookings = [];
           function populateFacilities(){
             Facility.findOne({ _id: docs[i].facility }, function(err, fac){
-              console.log(docs[i]);
-              console.log(fac);
               var booking = { facility: fac.name + ' ' + fac.id,
                               timeslot: docs[i].timeslot,
                               duration: docs[i].duration  };
@@ -62,7 +60,6 @@ module.exports = function(passport){
               if (i < docs.length){
                   populateFacilities();
               }else{
-                console.log(bookings);
                 render();
               }
             });
