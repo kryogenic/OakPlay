@@ -51,6 +51,10 @@ module.exports = function(passport){
           var i = 0;
           var bookings = [];
           function populateFacilities(){
+            if(docs.length == 0) {
+                render();
+                return;
+            }
             Facility.findOne({ _id: docs[i].facility }, function(err, fac){
               var booking = { facility: fac.name + ' ' + fac.id,
                               timeslot: docs[i].timeslot,

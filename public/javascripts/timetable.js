@@ -16,15 +16,16 @@ $(document).ready(function(){
 $(".timeslot").click(function(e){
     var timeslotDiv = $(this);
     if(timeslotDiv.hasClass('available-time')) {
+        var oldClass = timeslotDiv.attr('class');
+        timeslotDiv.removeClass('available-time');
+        timeslotDiv.addClass('userbooked-time');
         $.post("/bookings/create", {
             day: timeslotDiv.attr('data-day'),
             timeslot: timeslotDiv.attr('data-time'),
             facility:facility_id})
         .done(function(data) {
-            if(data.success) {
-                timeslotDiv.removeClass('available-time');
-                timeslotDiv.addClass('userbooked-time');
-            } else {
+            if(!data.success) {
+                timeslotDiv.attr('class', oldClass);
                 alert(data.message);
             }
         });
@@ -39,7 +40,8 @@ $(".timeslot").click(function(e){
                 timeslotDiv.removeClass('unavailable-time');
                 timeslotDiv.addClass('available-time');
             } else {
-                alert(data.message);
+                if(data.message)
+                    alert(data.message);
             }
         });
     }
