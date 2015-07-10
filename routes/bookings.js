@@ -169,10 +169,11 @@ function authorize_user_booking(user, booking, callback) {
             }
             if(!err){
                 resolve(!(
-                timeslots[booking.timeslot-3] && timeslots[booking.timeslot-2] && timeslots[booking.timeslot-1] ||
-                timeslots[booking.timeslot-2] && timeslots[booking.timeslot-1] && timeslots[booking.timeslot+1] ||
-                timeslots[booking.timeslot-1] && timeslots[booking.timeslot+1] && timeslots[booking.timeslot+2] ||
-                timeslots[booking.timeslot+1] && timeslots[booking.timeslot+2] && timeslots[booking.timeslot+3]
+                timeslots[booking.timeslot-4] && timeslots[booking.timeslot-3] && timeslots[booking.timeslot-2] && timeslots[booking.timeslot-1] ||
+                timeslots[booking.timeslot-3] && timeslots[booking.timeslot-2] && timeslots[booking.timeslot-1] && timeslots[booking.timeslot+1] ||
+                timeslots[booking.timeslot-2] && timeslots[booking.timeslot-1] && timeslots[booking.timeslot+1] && timeslots[booking.timeslot+2] ||
+                timeslots[booking.timeslot-1] && timeslots[booking.timeslot+1] && timeslots[booking.timeslot+2] && timeslots[booking.timeslot+3] ||
+                timeslots[booking.timeslot+1] && timeslots[booking.timeslot+2] && timeslots[booking.timeslot+3] && timeslots[booking.timeslot+4]
                 ));
             }else{
                 console.log(err);
