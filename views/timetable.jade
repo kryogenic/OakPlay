@@ -5,7 +5,7 @@ block content
 
     nav.navbar.navbar-default.navbar-fixed-top()
         .container-fluid
-            div.calendar
+            div.nav-cal
                 div.day
                     div.time
                 - var days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
@@ -18,16 +18,39 @@ block content
                             p= day
             
     p #{message}
-    div.dropdown
-        button.btn.btn-default.dropdown-toggle(type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true") #{facilities[0].name} #{number}  
-            span.caret
-        ul.dropdown-menu(aria-labelledby="dropdownMenu1")
-            each val, index in facilities
-                li
-                    a(href='/timetable/'+val.name+'/'+(index+1))= val.name+' '+(index+1)
+    if facility.name == 'Pool'
+        div.dropdown
+            button.btn.btn-default Swimming #{facility.name}
+    else
+        div.dropdown
+            button.btn.btn-default.dropdown-toggle(type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true") #{facility.name} #{facilitydesc} ##{number} 
+                span.caret
+            ul.dropdown-menu(aria-labelledby="dropdownMenu1")
+                each val, index in facilities
+                    li
+                        a(href='/timetable/'+val.name+'/'+(index+1))= val.name+' '+facilitydesc+' #'+(index+1)
+    
+    div.legend
+        div.timeslots
+            div.time
+            div.available-time
+            div.userbooked-time
+            div.unavailable-time
+            div.unbookable-time
+                span.glyphicon.glyphicon-remove
+        div.timeslots
+            div.time
+            div.legendt
+                p Available
+            div.legendt
+                p Booked by you
+            div.legendt
+                p Booked by someone
+            div.legendt
+                p Unavailable for booking
 
-    h1(style="text-align:center") Timetable  
     div.calendar
+        h2 Bookings
         div.timeslots
             div.time
             - var n = 0
@@ -45,11 +68,13 @@ block content
                     p= day
                 - var n = 0
                 while ((~~(n/2) + 8) < d.getHours() || (~~(n/2) + 8) == d.getHours() && (n % 2 == 0 ? 0 : 30) < d.getMinutes()) && i == 1
-                    div.time
+                    div.unbookable-time
+                        span.glyphicon.glyphicon-remove
                     - n++
                 if day == 'Sun'
                     while n < 4
-                        div.time
+                        div.unbookable-time
+                            span.glyphicon.glyphicon-remove
                         - n++
                     while n < 28
                         each b in uBookings
@@ -68,7 +93,8 @@ block content
                             div(class='timeslot available-time', data-day=day, data-time=n)
                             - n++
                     while n < 32
-                        div.time
+                        div.unbookable-time
+                            span.glyphicon.glyphicon-remove
                         - n++
                 else
                     while n < 32
