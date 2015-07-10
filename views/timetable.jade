@@ -44,7 +44,7 @@ block content
                     - var day = days[(d.getDay()+i++)%7]
                     p= day
                 - var n = 0
-                while (~~(n/2) + 8) < d.getHours() && i == 1
+                while ((~~(n/2) + 8) < d.getHours() || (~~(n/2) + 8) == d.getHours() && (n % 2 == 0 ? 0 : 30) < d.getMinutes()) && i == 1
                     div.time
                     - n++
                 if day == 'Sun'
