@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var User = require('../models/user');
 var Booking = require("../models/booking");
+var Facility = require("../models/facility");
 var bcrypt = require('bcrypt-nodejs');
 var nodemailer = require('nodemailer');
 var generatePassword = require('password-generator');
@@ -45,7 +46,12 @@ module.exports = function(passport){
 
     /*GET profile page. */
     router.get('/profile', isAuthenticated, function(req, res, next) {
-        Booking.find({user:req.user}, function(err, docs){
+        Booking.find({user:req.user}, 'facility timeslot duration', function(err, docs){
+     
+            for(var f in docs){
+                Facility.findOne({ _id: docs[f].facility }, function(err, fac){
+                });
+            }
             res.render('profile', { message: req.flash('message'),
                                 username: req.user.username,
                                 first_name: req.user.first_name,
