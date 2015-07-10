@@ -48,17 +48,35 @@ module.exports = function(passport){
     router.get('/profile', isAuthenticated, function(req, res, next) {
         Booking.find({user:req.user}, 'facility timeslot duration', function(err, docs){
      
-            for(var f in docs){
-                Facility.findOne({ _id: docs[f].facility }, function(err, fac){
-                });
-            }
+          var i = 0;
+          var bookings = [];
+          function populateFacilities(){
+            Facility.findOne({ _id: docs[i].facility }, function(err, fac){
+              console.log(docs[i]);
+              console.log(fac);
+              var booking = { facility: fac.name + ' ' + fac.id,
+                              timeslot: docs[i].timeslot,
+                              duration: docs[i].duration  };
+              bookings.push(booking);
+              i++;
+              if (i < docs.length){
+                  populateFacilities();
+              }else{
+                console.log(bookings);
+                render();
+              }
+            });
+          }
+          function render(){
             res.render('profile', { message: req.flash('message'),
                                 username: req.user.username,
                                 first_name: req.user.first_name,
                                 last_name: req.user.last_name,
                                 date_joined: req.user.date_joined.toDateString(),
-                                user_bookings: docs
-            });    
+                                user_bookings: bookings
+            });
+          }
+          populateFacilities();
         });
     });
 
