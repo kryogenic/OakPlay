@@ -46,39 +46,15 @@ module.exports = function(passport){
 
     /*GET profile page. */
     router.get('/profile', isAuthenticated, function(req, res, next) {
-        Booking.find({user:req.user}, 'facility timeslot duration', function(err, docs){
-     
-          var i = 0;
-          var bookings = [];
-          function populateFacilities(){
-            if(docs.length == 0) {
-                render();
-                return;
-            }
-            Facility.findOne({ _id: docs[i].facility }, function(err, fac){
-              var booking = { facility: fac.name + ' ' + fac.id,
-                              timeslot: docs[i].timeslot,
-                              duration: docs[i].duration  };
-              bookings.push(booking);
-              i++;
-              if (i < docs.length){
-                  populateFacilities();
-              }else{
-                render();
-              }
-            });
-          }
-          function render(){
-            res.render('profile', { message: req.flash('message'),
-                                username: req.user.username,
-                                first_name: req.user.first_name,
-                                last_name: req.user.last_name,
-                                date_joined: req.user.date_joined.toDateString(),
-                                user_bookings: bookings
-            });
-          }
-          populateFacilities();
+      Booking.find({user:req.user}, 'facility timeslot duration').populate('facility').exec(function(err, docs){
+        res.render('profile', { message: req.flash('message'),
+                            username: req.user.username,
+                            first_name: req.user.first_name,
+                            last_name: req.user.last_name,
+                            date_joined: req.user.date_joined.toDateString(),
+                            user_bookings: docs
         });
+      });
     });
 
     /*GET Registration Page */
