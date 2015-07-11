@@ -51,11 +51,11 @@ module.exports = function(passport){
              .sort({ facility: 'asc', timeslot: 'asc' })
              .exec(function(err, docs){
         res.render('profile', { message: req.flash('message'),
-                            username: req.user.username,
-                            first_name: req.user.first_name,
-                            last_name: req.user.last_name,
-                            date_joined: req.user.date_joined.toDateString(),
-                            user_bookings: docs
+                                username: req.user.username,
+                                first_name: req.user.first_name,
+                                last_name: req.user.last_name,
+                                date_joined: req.user.date_joined.toDateString(),
+                                user_bookings: docs
         });
       });
     });
