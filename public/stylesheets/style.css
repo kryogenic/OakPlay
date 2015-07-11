@@ -126,4 +126,19 @@ a {
     min-height: 20px;
 }
 
+.home {
+    margin: auto;
+    width: 60%
+}
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 15px;
+}
+
+.rec {
+   padding-bottom: 15px;
+}
 
