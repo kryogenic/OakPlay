@@ -26,14 +26,22 @@ block content
           thead
               tr
                   th Facility
+                  th Day
                   th Time
-                  th Duration
                   th.text-right Delete booking
           each b in user_bookings
-                  tr.profile-booking(data-href='/timetable/'+b.facility.name+'/'+b.facility.id)
+              if b.duration != 0
+                  tr
                       td=b.facility.name + ' ' + b.facility.id
-                      td=b.timeslot
-                      td=b.duration
+                      td=b.day
+                      - var starttime = ((~~(b.timeslot/2) + 8)%12)
+                      - starttime = (starttime == 0 ? 12 : starttime) + (b.timeslot % 2 == 0 ? ':00' : ':30')
+                      - starttime = starttime + (b.timeslot < 8 || b.timeslot == 32 ? 'am' : 'pm')
+                      - var endslot = b.timeslot + b.duration
+                      - var endtime = ((~~(endslot/2) + 8)%12)
+                      - endtime = (endtime == 0 ? 12 : endtime) + (endslot % 2 == 0 ? ':00' : ':30')
+                      - endtime = endtime + (endslot < 8 || endslot == 32 ? 'am' : 'pm')
+                      td= starttime + ' - ' + endtime
                       td.text-right 
                         button.btn.btn-danger
                           span.glyphicon.glyphicon-remove

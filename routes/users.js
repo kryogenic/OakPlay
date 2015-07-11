@@ -46,10 +46,49 @@ module.exports = function(passport){
 
     /*GET profile page. */
     router.get('/profile', isAuthenticated, function(req, res, next) {
-      Booking.find({user:req.user}, 'facility timeslot duration')
+      Booking.find({user:req.user}, 'facility timeslot duration day')
              .populate('facility')
-             .sort({ facility: 'asc', timeslot: 'asc' })
+             .sort({ facility: 'asc', day:'asc', timeslot: 'asc' })
              .exec(function(err, docs){
+
+        //compares adjacent bookings to display bookings properly
+        //sets the other durations to 0 so they aren't also displayed            
+        for(var i = 0; i < docs.length-1;){
+            var j = 1;
+            while(docs[i].timeslot + j == docs[i + j].timeslot && docs[i].facility == docs[i + j].facility && docs[i].day == docs[i + j].day){
+                docs[i].duration++;
+                docs[i + j].duration = 0;
+                j++;
+            }
+            i += j;
+        }
+        
+        function convert(cday){
+            days = {
+                "Sun": 0,
+                "Mon": 1,
+                "Tues": 2,
+                "Wed": 3,
+                "Thurs": 4,
+                "Fri": 5,
+                "Sat": 6
+            }
+            return (days[cday] - (new Date).getDay() + 7) % 7
+        }
+        //yay insertion sort! puts docs in the right order to be displayed on the profile page
+        for( i = 1; i < docs.length; i++){
+            var temp = docs[i];
+            var j = i - 1;
+            for( ; j >= 0 && convert(temp.day) < convert(docs[j].day); j--){
+                docs[j+1] = docs[j];
+            }
+            if(j >= 0) var tday = docs[j].day;
+            for( ; j >= 0 && temp.timeslot < docs[j].timeslot && docs[j].day == tday; j--){
+                docs[j+1] = docs[j];
+            }
+            docs[j+1] = temp;
+        }
+
         res.render('profile', { message: req.flash('message'),
                                 username: req.user.username,
                                 first_name: req.user.first_name,
