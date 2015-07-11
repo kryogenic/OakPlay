@@ -26,15 +26,18 @@ block content
           thead
               tr
                   th Facility
+                  th Day
                   th Time
-                  th Duration
                   th.text-right Delete booking
           each b in user_bookings
-              tr
-                  td=b.facility.name + ' ' + b.facility.id
-                  td=b.timeslot
-                  td=b.duration
-                  td.text-right 
-                    button.btn.btn-danger
-                      span.glyphicon.glyphicon-remove
+              if b.duration != 0
+                  tr
+                      td=b.facility.name + ' ' + b.facility.id
+                      td=b.day
+                      - var starttime = (~~(b.timeslot/2) + 8)%12
+                      - var endtime = (~~((b.timeslot+b.duration)/2) + 8)%12
+                      td= (starttime == 0 ? 12 : starttime ) + (starttime%2 == 1 ? ":00": ":30").toString() + ' - ' + (endtime == 0 ? 12 : endtime ) + (endtime%2 == 1 ? ":00": ":30").toString()
+                      td.text-right 
+                        button.btn.btn-danger
+                          span.glyphicon.glyphicon-remove
     div.col-md-2

@@ -46,10 +46,20 @@ module.exports = function(passport){
 
     /*GET profile page. */
     router.get('/profile', isAuthenticated, function(req, res, next) {
-      Booking.find({user:req.user}, 'facility timeslot duration')
+      Booking.find({user:req.user}, 'facility timeslot duration day')
              .populate('facility')
              .sort({ facility: 'asc', timeslot: 'asc' })
              .exec(function(err, docs){
+
+        for(var i = 0; i < docs.length-1;){
+            var j = 1;
+            while(docs[i].timeslot + j == docs[i + j].timeslot && docs[i].facility == docs[i + j].facility){
+                docs[i].duration++;
+                docs[i + j].duration = 0;
+                j++;
+            }
+            i += j;
+        }        
         res.render('profile', { message: req.flash('message'),
                             username: req.user.username,
                             first_name: req.user.first_name,
