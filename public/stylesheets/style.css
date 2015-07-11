@@ -126,7 +126,28 @@ a {
     min-height: 20px;
 }
 
+.home {
+    margin: auto;
+    width: 60%
+}
+
 .glyphicon-big {
     font-size: 13pt;
     margin-top: 2px;
   }
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 15px;
+}
+
+.rec {
+   padding-bottom: 15px;
+}
+
+.glyphicon-big {
+    font-size: 13pt;
+    margin-top: 2px;
+  }
+

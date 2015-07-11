@@ -1,5 +1,30 @@
 extends layout
 
 block content
-    h1(style="text-align:center") HOME
-    a(href='/users/login') login
+    div.home
+        img.img-responsive(class="logo" src="/images/logo.png")
+        img.img-responsive(class="rec" src="/images/centre.jpg")
+        p.
+            Welcome to OakPlay, Oak Bay Recreation Center's facility booking service. Book your favorite facilities to ensure you never miss out. The Rec Center provides the online reservations for the following facilities:
+
+        ul#facilities
+          li 5 Tennis Courts
+          li 1 Pool
+          li 4 Squash Courts
+          li 3 Workout rooms
+          li 2 Spinning rooms
+
+        h2 Hours
+
+        p. 
+            The Rec Center is open everyday from 8:00 AM to Midnight, except Sundays when we are open from 10:00 AM to 8:00 PM. 
+
+        h2 Booking
+
+        p.
+          Each of the above facilities are bookable during these hours and can be booked for a maximum of 2 hours in increments of 30 minutes.     
+ 
+        p.
+          You may create and maintain a profile with your biographic information. Booking a facility is simple. You login, see a listing of available facilities for a given day and make a reservation. You are able to see information about each facility to make sure you are booking the correct facility. 
+        p.
+          Any cancellation less than 24 hours prior you appointment, you will not be able to book another reservation for the next 48 hours.
