@@ -46,7 +46,7 @@ module.exports = function(passport){
 
     /*GET profile page. */
     router.get('/profile', isAuthenticated, function(req, res, next) {
-      Booking.find({user:req.user}, 'facility timeslot duration')
+      Booking.find({user:req.user}, 'facility timeslot duration day')
              .populate('facility')
              .sort({ facility: 'asc', timeslot: 'asc' })
              .exec(function(err, docs){

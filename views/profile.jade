@@ -28,15 +28,19 @@ block content
                   th Facility
                   th Time
                   th Duration
+                  th Day
                   th.text-right Delete booking
           each b in user_bookings
                   tr.profile-booking(data-href='/timetable/'+b.facility.name+'/'+b.facility.id)
                       td=b.facility.name + ' ' + b.facility.id
-                      td=b.timeslot
+                      - var hour = (Math.floor(b.timeslot/2) + 8)%12
+                      td= (hour == 0 ? 12 : hour ) + (b.timeslot%2 == 1 ? ":30": ":00").toString()
                       td=b.duration
+                      td=b.day
                       td.text-right 
                         button.btn.btn-danger
                           span.glyphicon.glyphicon-remove
+                  div= b
     div.col-md-2
 
     script(src="/javascripts/profile.js")
