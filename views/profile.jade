@@ -34,9 +34,14 @@ block content
                   tr
                       td=b.facility.name + ' ' + b.facility.id
                       td=b.day
-                      - var starttime = (~~(b.timeslot/2) + 8)%12
-                      - var endtime = (~~((b.timeslot+b.duration)/2) + 8)%12
-                      td= (starttime == 0 ? 12 : starttime ) + (starttime%2 == 1 ? ":00": ":30").toString() + ' - ' + (endtime == 0 ? 12 : endtime ) + (endtime%2 == 1 ? ":00": ":30").toString()
+                      - var starttime = ((~~(b.timeslot/2) + 8)%12)
+                      - starttime = (starttime == 0 ? 12 : starttime) + (b.timeslot % 2 == 0 ? ':00' : ':30')
+                      - starttime = starttime + (b.timeslot < 8 || b.timeslot == 32 ? 'am' : 'pm')
+                      - var endslot = b.timeslot + b.duration
+                      - var endtime = ((~~(endslot/2) + 8)%12)
+                      - endtime = (endtime == 0 ? 12 : endtime) + (endslot % 2 == 0 ? ':00' : ':30')
+                      - endtime = endtime + (endslot < 8 || endslot == 32 ? 'am' : 'pm')
+                      td= starttime + ' - ' + endtime
                       td.text-right 
                         button.btn.btn-danger
                           span.glyphicon.glyphicon-remove

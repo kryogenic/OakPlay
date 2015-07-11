@@ -57,7 +57,7 @@ block content
             while n < 32
                 div.time
                     - var time = (~~(n++/2) + 8)%12
-                    p= (time == 0 ? 12 : time ) + (n%2 == 1 ? ":00": ":30").toString()
+                    p= (time == 0 ? 12 : time ) + (n%2 == 1 ? ":00": ":30")
         - var days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
         - var i = 0
         - var d = new Date()
