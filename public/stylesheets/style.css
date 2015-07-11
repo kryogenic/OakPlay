@@ -126,4 +126,7 @@ a {
     min-height: 20px;
 }
 
-
+.glyphicon-big {
+    font-size: 13pt;
+    margin-top: 2px;
+  }
