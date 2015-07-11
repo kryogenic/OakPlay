@@ -1,15 +1,36 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: url("../images/parks-rec.jpg");
+  background-repeat: no-repeat;
 }
 
 a {
   color: #00B7FF;
 }
 
+.legendt{
+    line-height: 20px;
+    height: 20px;
+    width: 150px;
+    margin: 3px;
+}
+
+.legend{
+    position: fixed;
+    top: 100;
+    left: 47;
+    width: 250px;
+}
+
+.nav-cal{
+    margin-left: 285px;
+}
+
 .calendar{
+    text-align: center;
     width: 480px;
-    margin: auto;
+    margin-left: 250px;
 }
 
 .day{
@@ -22,34 +43,52 @@ a {
 
 .time{
     text-align: center;
-    line-height: 30px;
-    height: 30px;
+    line-height: 20px;
+    height: 20px;
     width: 50px;
-    margin: 5px;
+    margin: 3px;
+}
+
+.day-name{
+    text-align: center;
+    line-height: 20px;
+    height: 20px;
+    width: 50px;
+    margin: 3px;
 }
 
 .userbooked-time{
-    background-color: green;
-    border-radius: 10%;
-    height: 30px;
+    background-color: #00C90D;
+    border-radius: 6%;
+    height: 20px;
     width: 50px;
-    margin: 5px;
+    margin: 3px;
+}
+
+.unbookable-time{
+    text-align: center;
+    line-height: 22px;
+    background-color: #d3d3d3;
+    border-radius: 6%;
+    height: 20px;
+    width: 50px;
+    margin: 3px;
 }
 
 .unavailable-time{
-    background-color: red;
-    border-radius: 10%;
-    height: 30px;
+    background-color: #FF0700;
+    border-radius: 6%;
+    height: 20px;
     width: 50px;
-    margin: 5px;
+    margin: 3px;
 }
 
 .available-time{
-    background-color: #D3D3D3;
-    border-radius: 10%;
-    height: 30px;
+    background-color: #d3d3d3;
+    border-radius: 6%;
+    height: 20px;
     width: 50px;
-    margin: 5px;
+    margin: 3px;
 }
 
 .text-wrap > .booknow {
@@ -82,3 +121,9 @@ a {
 .caption {
     text-align: center;
 }
+
+.navbar {
+    min-height: 20px;
+}
+
+

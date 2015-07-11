@@ -1,19 +1,56 @@
 extends layout
 
+
 block content
+
+    nav.navbar.navbar-default.navbar-fixed-top()
+        .container-fluid
+            div.nav-cal
+                div.day
+                    div.time
+                - var days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
+                - var i = 0
+                while i < 7
+                    div.day
+                        div.day-name
+                            - var d = new Date()
+                            - var day = days[(d.getDay()+i++)%7]
+                            p= day
+            
     p #{message}
-    div.dropdown
-        button.btn.btn-default.dropdown-toggle(type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true") #{facilities[0].name} #{number}  
-            span.caret
-        ul.dropdown-menu(aria-labelledby="dropdownMenu1")
-            each val, index in facilities
-                li
-                    a(href='/timetable/'+val.name+'/'+(index+1))= val.name+' '+(index+1)
+    if facility.name == 'Pool'
+        div.dropdown
+            button.btn.btn-default Swimming #{facility.name}
+    else
+        div.dropdown
+            button.btn.btn-default.dropdown-toggle(type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true") #{facility.name} #{facilitydesc} ##{number} 
+                span.caret
+            ul.dropdown-menu(aria-labelledby="dropdownMenu1")
+                each val, index in facilities
+                    li
+                        a(href='/timetable/'+val.name+'/'+(index+1))= val.name+' '+facilitydesc+' #'+(index+1)
+    
+    div.legend
+        div.timeslots
+            div.time
+            div.available-time
+            div.userbooked-time
+            div.unavailable-time
+            div.unbookable-time
+                span.glyphicon.glyphicon-remove
+        div.timeslots
+            div.time
+            div.legendt
+                p Available
+            div.legendt
+                p Booked by you
+            div.legendt
+                p Booked by someone
+            div.legendt
+                p Unavailable for booking
 
-    p #{facility}
-
-    h1(style="text-align:center") Timetable  
     div.calendar
+        h2 Bookings
         div.timeslots
             div.time
             - var n = 0
@@ -23,53 +60,60 @@ block content
                     p= (time == 0 ? 12 : time ) + (n%2 == 1 ? ":00": ":30").toString()
         - var days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
         - var i = 0
+        - var d = new Date()
         while i < 7
             div.day
-                div.time
-                    - var d = new Date()
+                div.day-name
                     - var day = days[(d.getDay()+i++)%7]
                     p= day
                 - var n = 0
+                while ((~~(n/2) + 8) < d.getHours() || (~~(n/2) + 8) == d.getHours() && (n % 2 == 0 ? 0 : 30) < d.getMinutes()) && i == 1
+                    div.unbookable-time
+                        span.glyphicon.glyphicon-remove
+                    - n++
                 if day == 'Sun'
                     while n < 4
-                        div.time
+                        div.unbookable-time
+                            span.glyphicon.glyphicon-remove
                         - n++
                     while n < 28
                         each b in uBookings
                             if b.day == day
                                 if b.timeslot == n
-                                    - var limit = n + b.duration
-                                    while n < limit
-                                        div.userbooked-time
-                                        - n++
+                                    div(class='timeslot userbooked-time', data-day=day, data-time=n)
+                                    - n++
+                                    break
                         each b in fBookings
                             if b.day == day
                                 if b.timeslot == n
-                                    - var limit = n + b.duration
-                                    while n < limit
-                                        div.unavailable-time
-                                        - n++
-                        div.available-time
-                        - n++
+                                    div(class='timeslot unavailable-time', data-day=day, data-time=n)
+                                    - n++
+                                    break
+                        if n < 28
+                            div(class='timeslot available-time', data-day=day, data-time=n)
+                            - n++
                     while n < 32
-                        div.time
+                        div.unbookable-time
+                            span.glyphicon.glyphicon-remove
                         - n++
                 else
                     while n < 32
                         each b in uBookings
                             if b.day == day
                                 if b.timeslot == n
-                                    - var limit = n + b.duration
-                                    while n < limit
-                                        div.userbooked-time
-                                        - n++
+                                    div(class='timeslot userbooked-time', data-day=day, data-time=n)
+                                    - n++
+                                    break
                         each b in fBookings
                             if b.day == day
                                 if b.timeslot == n
-                                    - var limit = n + b.duration
-                                    while n < limit
-                                        div.unavailable-time
-                                        - n++
-                        a(href='/users/login')
-                            div.available-time
+                                    div(class='timeslot unavailable-time', data-day=day, data-time=n)
+                                    - n++
+                                    break
+                        if n < 32
+                            div(class='timeslot available-time', data-day=day, data-time=n)
                             - n++
+
+    script(type="text/javascript").
+        var facility_id = "#{facility._id}";
+    script(src="/javascripts/timetable.js")
