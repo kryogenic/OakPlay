@@ -102,12 +102,15 @@ module.exports = function(passport){
             return 0;
         });
 
+        console.log(req.user);
+
         res.render('profile', { message: req.flash('message'),
                                 username: req.user.username,
                                 first_name: req.user.first_name,
                                 last_name: req.user.last_name,
                                 date_joined: req.user.date_joined.toDateString(),
-                                user_bookings: docs
+                                user_bookings: docs,
+                                cooldown: req.user.cooldown
         });
       });
     });

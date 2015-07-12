@@ -23,12 +23,12 @@ router.get('/:facility/:num', User.isAuthenticated, function(req, res, next) {
                     break;
                 }
             }
-            var desc;
-            if(fac.name == 'Tennis' || fac.name == 'Squash') desc = 'Court';
-            if(fac.name == 'Workout' || fac.name == 'Spin') desc = 'Room';
+            var type;
+            if(fac.name == 'Tennis' || fac.name == 'Squash') type = 'Court';
+            if(fac.name == 'Workout' || fac.name == 'Spin') type = 'Room';
             Booking.find({facility:fac}, 'day timeslot').sort('timeslot').exec(function(err, fdoc){
                 Booking.find({user: req.user._id, facility: fac}, 'day timeslot').sort('timeslot').exec(function(err, udoc){
-                    res.render('timetable', {number: req.params.num, facilities: docs, message: req.flash('message'), fBookings: fdoc, uBookings: udoc, facility: fac, facilitydesc: desc});
+                    res.render('timetable', {number: req.params.num, facilities: docs, message: req.flash('message'), fBookings: fdoc, uBookings: udoc, facility: fac, facilitytype: type, facilitydesc: fac.description});
                 })
             })
         }

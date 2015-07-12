@@ -17,12 +17,13 @@ block content
                         p= day
             
     p #{message}
+    p(style="float:right") #{facilitydesc}
     if facility.name == 'Pool'
         div.dropdown
             button.btn.btn-default Swimming #{facility.name}
     else
         div.dropdown
-            button.btn.btn-default.dropdown-toggle(type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true") #{facility.name} #{facilitydesc} ##{number} 
+            button.btn.btn-default.dropdown-toggle(type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true") #{facility.name} #{facilitytype} ##{number} 
                 span.caret
             ul.dropdown-menu(aria-labelledby="dropdownMenu1")
                 each val, index in facilities

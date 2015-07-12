@@ -4,9 +4,12 @@ extends layout
 block content
   div.row
     div.col-md-6
-      h1(style="text-align:left") Profile
+      h1(style="text-align:left") #{username}
     div.col-md-6
-      h2(style="text-align:right") #{username}
+      if(cooldown)
+        h4.failtext= "Banned from booking until: " + cooldown.toString().substr(0, 21)
+      else
+        h4.successtext Currently able to book!
   div.row
     div.col-md-2
     div.col-md-8
@@ -15,8 +18,8 @@ block content
           thead
               tr
                   th Username
-                  th Real Name
-                  th Join Date
+                  th Name
+                  th Signup Date
           tr
               td #{username}
               td #{first_name} #{last_name}

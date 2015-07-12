@@ -11,28 +11,33 @@ var facilities_promise = new Promise(function(resolve) {
             f = new Facility();
             f.name = 'Tennis';
             f.id = i;
+            f.description = 'Tennis Court #' + i + 'is a good tennis court';
             f.save();
         }
         f = new Facility();
         f.name = 'Pool';
         f.id = 1;
+        f.description = 'The swimming pool is a good swimming pool';
         f.save();
         for(var i = 1; i < 5; i++) {
             f = new Facility();
             f.name = 'Squash';
             f.id = i;
+            f.description = 'Squash Court #' + i + 'is a good squash court';
             f.save();
         }
         for(var i = 1; i < 4; i++) {
             f = new Facility();
             f.name = 'Workout';
             f.id = i;
+            f.description = 'Workout room #' + i + 'is a good workout room';
             f.save();
         }
         for(var i = 1; i < 3; i++) {
             f = new Facility();
             f.name = 'Spin';
             f.id = i;
+            f.description = 'Spin room #' + i + 'is a good spin room';
             f.save();
         }
 
