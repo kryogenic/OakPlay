@@ -9,6 +9,10 @@ a {
   color: #00B7FF;
 }
 
+.profile-booking{
+    cursor: pointer; cursor: hand;
+}
+
 .legendt{
     line-height: 20px;
     height: 20px;
@@ -24,7 +28,8 @@ a {
 }
 
 .nav-cal{
-    margin-left: 285px;
+    width: 480px;
+    margin-left: 300px;
 }
 
 .calendar{

@@ -75,19 +75,21 @@ module.exports = function(passport){
             }
             return (days[cday] - (new Date).getDay() + 7) % 7
         }
-        //yay insertion sort! puts docs in the right order to be displayed on the profile page
-        for( i = 1; i < docs.length; i++){
-            var temp = docs[i];
-            var j = i - 1;
-            for( ; j >= 0 && convert(temp.day) < convert(docs[j].day); j--){
-                docs[j+1] = docs[j];
+        docs.sort(function(a, b){
+            if(convert(a.day) > convert(b.day)){
+                return 1;
             }
-            if(j >= 0) var tday = docs[j].day;
-            for( ; j >= 0 && temp.timeslot < docs[j].timeslot && docs[j].day == tday; j--){
-                docs[j+1] = docs[j];
+            if(convert(a.day) < convert(b.day)){
+                return -1;
             }
-            docs[j+1] = temp;
-        }
+            if(a.timeslot > b.timeslot){
+                return 1;
+            }
+            if(a.timeslot < b.timeslot){
+                return -1;
+            }
+            return 0;
+        });
 
         res.render('profile', { message: req.flash('message'),
                                 username: req.user.username,

@@ -3,19 +3,18 @@ extends layout
 
 block content
 
-    nav.navbar.navbar-default.navbar-fixed-top()
-        .container-fluid
-            div.nav-cal
+    nav.navbar.navbar-default.navbar-fixed-top
+        div.nav-cal
+            div.day
+                div.time
+            - var days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
+            - var i = 0
+            while i < 7
                 div.day
-                    div.time
-                - var days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
-                - var i = 0
-                while i < 7
-                    div.day
-                        div.day-name
-                            - var d = new Date()
-                            - var day = days[(d.getDay()+i++)%7]
-                            p= day
+                    div.day-name
+                        - var d = new Date()
+                        - var day = days[(d.getDay()+i++)%7]
+                        p= day
             
     p #{message}
     if facility.name == 'Pool'
