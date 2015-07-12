@@ -31,8 +31,8 @@ block content
                   th.text-right Delete booking
           each b in user_bookings
               if b.duration != 0
-                  tr.profile-booking(data-href='/timetable/'+b.facility.name+'/'+b.facility.id)
-                      td=b.facility.name + ' ' + b.facility.id
+                  tr
+                      td.profile-booking(data-href='/timetable/'+b.facility.name+'/'+b.facility.id) #{b.facility.name} #{b.facility.id}
                       td=b.day
                       - var starttime = ((~~(b.timeslot/2) + 8)%12)
                       - starttime = (starttime == 0 ? 12 : starttime) + (b.timeslot % 2 == 0 ? ':00' : ':30')
@@ -43,7 +43,7 @@ block content
                       - endtime = endtime + (endslot < 8 || endslot == 32 ? 'am' : 'pm')
                       td= starttime + ' - ' + endtime
                       td.text-right 
-                        button.btn.btn-danger
+                        button.btn.btn-danger(data-day=b.day, data-time=b.timeslot, data-duration=b.duration, data-facility=b.facility._id)
                           span.glyphicon.glyphicon-remove
     div.col-md-2
 

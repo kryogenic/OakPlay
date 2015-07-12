@@ -1,28 +1,24 @@
 $(document).ready(function(){
-    // remove booking from profile page
-    // tasks:
-    //      find the booking in database for particular user
-    //      delete booking
-    //      remove from list
-    $(".glyphicon-remove").click(function(){
-        var b = $(this);
-        console.log("deleting"); 
-        $.post("/bookings/delete", {
-             //?
-        })
-        .done(function(data) {
-            if(data.success) {
-                console.log("success!")
-                b.closest('tr').remove();
-            } else {
-                alert(data.message);
-            }   
-        }); 
-    });
-
     // code to link each booking in table to their corresponding facility page
     $(".profile-booking").click(function(){
         var row = $(this);
         window.document.location = row.data("href");
+    });
+
+    $(".btn-danger").click(function(){
+        bookingRow = $(this);
+        $.post("/bookings/delete/multiple", {
+            facility: bookingRow.attr('data-facility').substring(1, bookingRow.attr('data-facility').length - 1),
+            day: bookingRow.attr('data-day'),
+            timeslot: bookingRow.attr('data-time'),
+            duration: bookingRow.attr('data-duration')
+        })
+        .done(function(data){
+            if(data.success){
+                bookingRow.parent().parent().remove();
+            }else{
+                alert("Cancellation failed, try again.");
+            }
+        })
     });
 });

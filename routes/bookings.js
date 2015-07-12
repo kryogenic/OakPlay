@@ -4,6 +4,39 @@ var mongoose = require('mongoose');
 var Booking = require('../models/booking');
 var User = require('../models/user');
 
+router.post('/delete/multiple', User.isAuthenticated, function(req, res, next){
+    if(req.user.admin){
+        Booking.remove({day: req.body.day, timeslot: {$lt: req.body.timeslot+req.body.duration, $gte: req.body.timeslot}, facility: req.body.facility}, function(err){
+            if(!err){
+                res.json({success:true});
+            }else{
+                console.log(err);
+                res.json({success:false});
+            }
+        })
+    }else{
+        Booking.find({day: req.body.day, timeslot: {$lt: req.body.timeslot+req.body.duration, $gte: req.body.timeslot}, facility: req.body.facility, user: req.user._id})
+               .sort({timeslot: 'asc'}).exec(function(err, docs){
+            if(!err){
+                if(docs.length != 0){
+                    if(!is_24h_away(docs[0])){
+                        var now = new Date();
+                        req.user.cooldown = now.setDate(now.getDate() + 2);
+                        req.user.save();
+                    }
+                    docs.forEach(function(doc){
+                        doc.remove();
+                    })
+                    res.json({success:true});
+                }
+            }else{
+                console.log(err);
+                res.json({succes:false});
+            }
+        })
+    }
+})
+
 router.post('/delete', User.isAuthenticated, function(req, res, next) {
     if(req.user.admin) {
         Booking.remove({day: req.body.day, timeslot: req.body.timeslot, facility: req.body.facility}, function(err) {
