@@ -2,7 +2,6 @@ $(document).ready(function(){
     // code to link each booking in table to their corresponding facility page
     $(".profile-booking").click(function(){
         var row = $(this);
-        alert("DURR");
         window.document.location = row.data("href");
     });
 
