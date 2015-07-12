@@ -46,12 +46,16 @@ router.post('/create', User.isAuthenticated, function(req, res, next) {
         res_id: 1,
         duration: 1
     });
+    var errmsg = "no error";
     if(!is_in_past(b)) {
         authorize_user_booking(req.user, b, function(conditions) {
             var authorized = true;
             for(var idx in conditions) {
-                if(!conditions[idx])
+                if(!conditions[idx]) {
                     authorized = false;
+                    errmsg = omgwtfhax[idx][1];
+                    break;
+                }
             }
             if(authorized) {
                 b.save(function(err) {
@@ -60,7 +64,7 @@ router.post('/create', User.isAuthenticated, function(req, res, next) {
                 });
                 res.json({success:true});
             } else {
-                res.json({success:false,message:"You cannot create this booking"});
+                res.json({success:false,message:errmsg});
             }
         });
     } else {
@@ -119,39 +123,37 @@ function is_24h_away(booking) {
         return true;
     }
 }
-function authorize_user_booking(user, booking, callback) {
-    var no_cooldown = new Promise(function(resolve) {
-        User.findOne({_id:user._id}, function(err, user) {
-            if(!err){
-                resolve(user.cooldown == null || new Date() - user.cooldown > 0);
-            }else{
-                console.log(err);
-                resolve(false);
-            }
-        });
-    });
-    var timeslot_open = new Promise(function(resolve) {
-        Booking.count({day:booking.day, timeslot:booking.timeslot, facility:booking.facility}, function(err, count) {
-            if(!err){
-                resolve(count == 0);
-            }else{
-                console.log(err);
-                resolve(false);
-            }
-        });
-    });
-    var max_weekly_reservations = 15;
-    var enforce_reservation_count = new Promise(function(resolve) {
+
+var omgwtfhax = [
+    [no_cooldown = function(user, booking, resolve) {
+    User.findOne({_id:user._id}, function(err, user) {
+        if(!err){
+            resolve(user.cooldown == null || new Date() - user.cooldown > 0);
+        }else{
+            console.log(err);
+            resolve(false);
+        }
+    })}, 'You are currently not allowed to create bookings'],
+    [timeslot_open = function(user, booking, resolve) {
+    Booking.count({day:booking.day, timeslot:booking.timeslot, facility:booking.facility}, function(err, count) {
+        if(!err){
+            resolve(count == 0);
+        }else{
+            console.log(err);
+            resolve(false);
+        }
+    })}, 'This timeslot has been booked by another user'],
+    [enforce_reservation_count = function(user, booking, resolve) {
         Booking.count({user:user, facility:booking.facility}, function(err, count) {
             if(!err){
-                resolve(count < max_weekly_reservations);
+                resolve(count < 15);
             }else{
                 console.log(err);
                 resolve(false);
             }
         });
-    });
-    var enforce_one_per_timeslot = new Promise(function(resolve) {
+    }, 'You have too many existing reservations in this facility to create any more'],
+    [enforce_one_per_timeslot = function(user, booking, resolve) {
         Booking.count({user:user, day:booking.day, timeslot:booking.timeslot}, function(err, count) {
             if(!err){
                 resolve(count == 0);
@@ -160,8 +162,8 @@ function authorize_user_booking(user, booking, callback) {
                 resolve(false);
             }
         });
-    });
-    var enforce_max_booking_length = new Promise(function(resolve) {
+    }, 'You have already booked this timeslot in another facility'],
+    [enforce_max_booking_length = function(user, booking, resolve) {
         Booking.find({user:user, facility:booking.facility, day:booking.day}, function(err, docs) {
             var timeslots = new Array(31);
             for(var idx in docs) {
@@ -180,13 +182,17 @@ function authorize_user_booking(user, booking, callback) {
                 resolve(false);
             }
         });
-    });
-    Promise.all([
-        no_cooldown,
-        timeslot_open,
-        enforce_reservation_count,
-        enforce_one_per_timeslot,
-        enforce_max_booking_length]).then(callback);
+    }, 'You can not book over 2 hours in a row']
+];
+function authorize_user_booking(user, booking, callback) {
+    var promises = [];
+    for(var i in omgwtfhax) {
+        promises.push(
+            new Promise(function(resolve) {
+                omgwtfhax[i][0](user, booking, resolve);
+                }));
+    }
+    Promise.all(promises).then(callback);
 }
 
 module.exports = router;
