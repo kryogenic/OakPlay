@@ -14,7 +14,10 @@ $ npm start
 -note, bookings are all wiped upon startup of the server and a test user and test administrator are generated with:
 
 Username: user
+
 Password: password
 
+
 Username: admin
+
 Password: password
