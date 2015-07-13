@@ -100,7 +100,7 @@ module.exports = function(passport){
         //sets the other durations to 0 so they aren't also displayed            
         for(var i = 0; i < docs.length-1;){
             var j = 1;
-            while(docs[i].timeslot + j == docs[i + j].timeslot && docs[i].facility == docs[i + j].facility && docs[i].day == docs[i + j].day){
+            while(i + j < docs.length && docs[i].timeslot + j == docs[i + j].timeslot && docs[i].facility == docs[i + j].facility && docs[i].day == docs[i + j].day){
                 docs[i].duration++;
                 docs[i + j].duration = 0;
                 j++;
@@ -120,6 +120,7 @@ module.exports = function(passport){
             }
             return (days[cday] - (new Date).getDay() + 7) % 7
         }
+        //sort the bookings in day -> timeslot order so the next upcoming one is displayed next
         docs.sort(function(a, b){
             if(convert(a.day) > convert(b.day)){
                 return 1;
@@ -135,9 +136,7 @@ module.exports = function(passport){
             }
             return 0;
         });
-
-        console.log(req.user);
-
+        
         res.render('profile', { message: req.flash('message'),
                                 username: req.user.username,
                                 first_name: req.user.first_name,
@@ -234,22 +233,6 @@ module.exports = function(passport){
     router.get('/signout', function(req, res) {
         req.logout();
         res.redirect('login');
-    });
-
-    /* GET users listing. */
-    router.get('/', isAuthenticated, function(req, res, next) {
-        User.find({}, function (err, docs) {
-            res.json(docs);
-        });
-    });
-
-    /* GET specific user info */
-    router.get('/:user_id', function(req, res, next) {
-        User.findById(req.params.user_id, function (err, user) {
-            if(err)
-                res.send(err);
-            res.json(user);
-        });
     });
 
     return router;

@@ -2,7 +2,7 @@ extends layout
 
 
 block content
-
+    p #{facilitydesc}
     nav.navbar.navbar-default.navbar-fixed-top
         div.nav-cal
             div.day
@@ -16,8 +16,7 @@ block content
                         - var day = days[(d.getDay()+i++)%7]
                         p= day
             
-    p #{message}
-    p(style="float:right") #{facilitydesc}
+
     if facility.name == 'Pool'
         div.dropdown
             button.btn.btn-default Swimming #{facility.name}
@@ -28,7 +27,7 @@ block content
             ul.dropdown-menu(aria-labelledby="dropdownMenu1")
                 each val, index in facilities
                     li
-                        a(href='/timetable/'+val.name+'/'+(index+1))= val.name+' '+facilitydesc+' #'+(index+1)
+                        a(href='/timetable/'+val.name+'/'+(index+1))= val.name+' '+facilitytype+' #'+(index+1)
     
     div.legend
         div.timeslots
