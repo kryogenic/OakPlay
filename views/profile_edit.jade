@@ -12,19 +12,16 @@ block content
       form(method="post")
         div.form-group
           label Username
-          input.form-control(type="username", name="username", required)
+          input.form-control(type="username", name="username", value="#{username}", disabled="true", required)
         div.form-group
           label First Name
-          input.form-control(type="first_name", name="first_name")
+          input.form-control(type="first_name", name="first_name", value="#{first_name}")
         div.form-group
           label Last Name
-          input.form-control(type="last_name", name="last_name")
+          input.form-control(type="last_name", name="last_name", value="#{last_name}")
         div.form-group
           label Email Address
-          input.form-control(type="email", name="email", required)
-        div.form-group
-          label Email Address
-          input.form-control(type="email", name="email", required)
+          input.form-control(type="email", name="email", value="#{email}", required)
         button.btn.btn-default Submit
         a.button.btn.btn-default(href='/users/profile' style='float:right') Cancel
       p #{message}
