@@ -2,6 +2,7 @@
 extends layout
 
 block content
+  p #{message}
   div.row
     div.col-md-6
       h1(style="text-align:left") #{username}
@@ -24,7 +25,7 @@ block content
               td #{username}
               td #{first_name} #{last_name}
               td #{date_joined}
-      a(href="/users/profile_edit") Edit Profile
+      a.btn.btn-default(href="/users/profile_edit") Edit Profile
       p &nbsp;
       h2 Bookings
       table.table.table-striped.table-hover
@@ -52,4 +53,4 @@ block content
                           span.glyphicon.glyphicon-remove
     div.col-md-2
 
-    script(src="/javascripts/profile.js")
+  script(src="/javascripts/profile.js")
