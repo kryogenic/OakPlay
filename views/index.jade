@@ -3,6 +3,8 @@ extends layout
 block content
     div.home
         img.img-responsive(class="logo" src="/images/logo.png")
+        div.text-center 
+            a(href='/users/login', class='button btn btn-default im') Login Now
         img.img-responsive(class="rec" src="/images/centre.jpg")
         p.
             Welcome to OakPlay, Oak Bay Recreation Center's facility booking service. Book your favorite facilities to ensure you never miss out. The Rec Center provides the online reservations for the following facilities:
@@ -28,3 +30,4 @@ block content
           You may create and maintain a profile with your biographic information. Booking a facility is simple. You login, see a listing of available facilities for a given day and make a reservation. You are able to see information about each facility to make sure you are booking the correct facility. 
         p.
           Any cancellation less than 24 hours prior you appointment, you will not be able to book another reservation for the next 48 hours.
+        a(href='/users/login', class='button btn btn-default' style='margin-left:10px') Login Now

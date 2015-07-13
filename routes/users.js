@@ -57,16 +57,36 @@ module.exports = function(passport){
     });
 
     /*Handle profile edit POST */
-    router.post('/profile_edit', function(req, res, next) {
+    router.post('/profile_edit', isAuthenticated, function(req, res, next) {
       User.update({username: req.user.username}, {
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         email: req.body.email,
     //  info: req.body.info
       }, function(err, affected, resp){
-        console.log(resp);
+        req.flash('message', 'Profile Information successfully updated!');
         res.redirect('/users/profile');
       });
+    });
+    
+    /*Handle edit password POST */
+    router.post('/profile_edit/pw', isAuthenticated, function(req, res, next){
+        if(!bcrypt.compareSync(req.body.oldpassword, req.user.password)) {
+            req.flash('message', 'Invalid Password, could not change');
+            res.redirect('/users/profile');
+        }else{
+            if(req.body.newpassword == req.body.newpassword2){
+                User.update({username: req.user.username},{
+                    password: bcrypt.hashSync(req.body.newpassword, bcrypt.genSaltSync(10), null)
+                }, function(err, affected, resp){
+                    req.flash('message', 'Password successfully changed!');
+                    res.redirect('/users/profile');
+                });
+            }else{
+                req.flash('message', 'Password fields unmatched, could not change');
+                res.redirect('/users/profile');
+            }
+        }
     });
 
     /*GET profile page. */
@@ -116,12 +136,15 @@ module.exports = function(passport){
             return 0;
         });
 
+        console.log(req.user);
+
         res.render('profile', { message: req.flash('message'),
                                 username: req.user.username,
                                 first_name: req.user.first_name,
                                 last_name: req.user.last_name,
                                 date_joined: req.user.date_joined.toDateString(),
-                                user_bookings: docs
+                                user_bookings: docs,
+                                cooldown: req.user.cooldown
         });
       });
     });

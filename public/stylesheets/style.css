@@ -9,6 +9,31 @@ a {
   color: #00B7FF;
 }
 
+#pwreset{
+    opacity: 0.92;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background: #000;
+    display: none;
+}
+
+.failtext{
+    text-align: right;
+    color: red;
+}
+
+.successtext{
+    text-align: right;
+    color: green;
+}
+
+.img-responsive{
+    margin-top: 15px;
+}
+
 .profile-booking{
     cursor: pointer; cursor: hand;
 }
