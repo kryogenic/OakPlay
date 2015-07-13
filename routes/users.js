@@ -51,7 +51,21 @@ module.exports = function(passport){
                                    username: req.user.username,
                                    first_name: req.user.first_name,
                                    last_name: req.user.last_name,
+                                   email: req.user.email,
                                    date_joined: req.user.date_joined.toDateString(),
+      });
+    });
+
+    /*Handle profile edit POST */
+    router.post('/profile_edit', function(req, res, next) {
+      User.update({username: req.user.username}, {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+    //  info: req.body.info
+      }, function(err, affected, resp){
+        console.log(resp);
+        res.redirect('/users/profile');
       });
     });
 
